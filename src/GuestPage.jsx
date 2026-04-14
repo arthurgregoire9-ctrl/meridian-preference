@@ -6,6 +6,8 @@ const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbG
 const TRANSLATIONS = {
   en: {
     flag: '🇬🇧',
+   title: 'Your', titleItalic: 'culinary', titleEnd: 'preferences',
+subtitle: 'This information allows our private chef to personalise every dining experience exclusively for you.',
     steps: ['Profile', 'Restrictions', 'Tastes', 'Morning'],
     returning: 'Returning guest?',
     emailPlaceholder: 'Enter your email to retrieve your profile',
@@ -50,6 +52,8 @@ const TRANSLATIONS = {
   },
   fr: {
     flag: '🇫🇷',
+    title: 'Vos', titleItalic: 'préférences', titleEnd: 'culinaires',
+subtitle: 'Ces informations permettent à notre chef privé de personnaliser chaque repas exclusivement pour vous.',
     steps: ['Profil', 'Restrictions', 'Goûts', 'Matin'],
     returning: 'Déjà client ?',
     emailPlaceholder: 'Entrez votre email pour retrouver votre profil',
@@ -94,6 +98,8 @@ const TRANSLATIONS = {
   },
   it: {
     flag: '🇮🇹',
+    title: 'Le tue', titleItalic: 'preferenze', titleEnd: 'culinarie',
+subtitle: 'Queste informazioni permettono al nostro chef di personalizzare ogni esperienza culinaria per te.',
     steps: ['Profilo', 'Restrizioni', 'Gusti', 'Mattino'],
     returning: 'Già cliente?',
     emailPlaceholder: 'Inserisci la tua email per recuperare il tuo profilo',
@@ -138,6 +144,8 @@ const TRANSLATIONS = {
   },
   ru: {
     flag: '🇷🇺',
+    title: 'Ваши', titleItalic: 'кулинарные', titleEnd: 'предпочтения',
+subtitle: 'Эта информация позволяет нашему шеф-повару персонализировать каждый приём пищи для вас.',
     steps: ['Профиль', 'Ограничения', 'Вкусы', 'Утро'],
     returning: 'Уже были у нас?',
     emailPlaceholder: 'Введите email для загрузки вашего профиля',
@@ -461,8 +469,8 @@ export default function GuestPage() {
         {!submitted ? (
           <div>
             <div className="page-header">
-              <h1>Your <em>culinary</em><br/>preferences</h1>
-              <p>This information allows our private chef to personalise every dining experience exclusively for you.</p>
+             <h1>{t.title} <em>{t.titleItalic}</em><br/>{t.titleEnd}</h1>
+<p>{t.subtitle}</p>
             </div>
 
             <div style={{display:'flex',gap:'8px',marginBottom:'40px',flexWrap:'wrap'}}>
