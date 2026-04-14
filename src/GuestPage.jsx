@@ -6,45 +6,30 @@ const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbG
 const TRANSLATIONS = {
   en: {
     flag: '🇬🇧',
-   title: 'Your', titleItalic: 'culinary', titleEnd: 'preferences',
-subtitle: 'This information allows our private chef to personalise every dining experience exclusively for you.',
+    title: 'Your', titleItalic: 'culinary', titleEnd: 'preferences',
+    subtitle: 'This information allows our private chef to personalise every dining experience exclusively for you.',
     steps: ['Profile', 'Restrictions', 'Tastes', 'Morning'],
     returning: 'Returning guest?',
     emailPlaceholder: 'Enter your email to retrieve your profile',
     profileFound: '✓ Profile found — your preferences have been loaded.',
     profileNotFound: 'No profile found. Please fill in your preferences below.',
-    firstName: 'First name',
-    firstNamePlaceholder: 'e.g. Alexandra',
-    email: 'Email',
-    emailSub: 'Used to save and retrieve your profile',
+    firstName: 'First name', firstNamePlaceholder: 'e.g. Alexandra',
+    email: 'Email', emailSub: 'Used to save and retrieve your profile',
     emailInputPlaceholder: 'e.g. alexandra@email.com',
-    allergies: 'Allergies & Intolerances',
-    allergiesPlaceholder: 'e.g. Nuts, Shellfish, Lactose',
-    dislikes: 'Disliked Ingredients',
-    dislikesPlaceholder: 'e.g. Coriander, Liver, Pineapple',
-    dietary: 'Dietary Requirements',
-    cuisines: 'Preferred Cuisines',
-    favorites: 'Favourite Dishes & Flavours',
-    favoritesPlaceholder: 'e.g. Fresh sashimi, hand-made pasta, black truffle',
-    spirits: 'Favourite Spirits',
-    spiritsPlaceholder: 'e.g. Macallan 18, Grey Goose, Don Julio 1942',
-    cocktails: 'Favourite Cocktails',
-    cocktailsPlaceholder: 'e.g. Negroni, Mojito, Aperol Spritz',
-    softs: 'Soft Drinks',
-    softsPlaceholder: 'e.g. San Pellegrino, Fever-Tree Ginger Beer',
-    breakfast: 'Breakfast Preferences',
-    breakfastPlaceholder: 'e.g. Eggs Benedict, fresh fruit, granola',
-    juices: 'Favourite Juices',
-    juicesPlaceholder: 'e.g. Fresh orange, green juice, watermelon',
-    notes: 'Additional Notes',
-    notesPlaceholder: 'e.g. Lighter meals at lunch, no red meat in the evening',
-    next: 'Continue',
-    back: 'Back',
-    submit: 'Submit to the crew',
+    allergies: 'Allergies & Intolerances', allergiesPlaceholder: 'e.g. Nuts, Shellfish, Lactose',
+    dislikes: 'Disliked Ingredients', dislikesPlaceholder: 'e.g. Coriander, Liver, Pineapple',
+    dietary: 'Dietary Requirements', cuisines: 'Preferred Cuisines',
+    favorites: 'Favourite Dishes & Flavours', favoritesPlaceholder: 'e.g. Fresh sashimi, hand-made pasta, black truffle',
+    spirits: 'Favourite Spirits', spiritsPlaceholder: 'e.g. Macallan 18, Grey Goose, Don Julio 1942',
+    cocktails: 'Favourite Cocktails', cocktailsPlaceholder: 'e.g. Negroni, Mojito, Aperol Spritz',
+    softs: 'Soft Drinks', softsPlaceholder: 'e.g. San Pellegrino, Fever-Tree Ginger Beer',
+    breakfast: 'Breakfast Preferences', breakfastPlaceholder: 'e.g. Eggs Benedict, fresh fruit, granola',
+    juices: 'Favourite Juices', juicesPlaceholder: 'e.g. Fresh orange, green juice, watermelon',
+    notes: 'Additional Notes', notesPlaceholder: 'e.g. Lighter meals at lunch, no red meat in the evening',
+    next: 'Continue', back: 'Back', submit: 'Submit to the crew',
     thankYou: 'Thank you.',
     thankYouMsg: 'Your preferences have been saved and transmitted to the crew. Our private chef will ensure every meal is tailored to your taste throughout your time on board.',
-    addGuest: '+ Add guest',
-    notFound: 'Link not found',
+    addGuest: '+ Add guest', notFound: 'Link not found',
     notFoundMsg: 'Please contact your charter agency for a valid link.',
     loading: 'Loading...',
     diets: ["Vegan","Vegetarian","Halal","Kosher","Keto","Gluten-free","Lactose-free","Paleo","No Pork"],
@@ -53,44 +38,29 @@ subtitle: 'This information allows our private chef to personalise every dining 
   fr: {
     flag: '🇫🇷',
     title: 'Vos', titleItalic: 'préférences', titleEnd: 'culinaires',
-subtitle: 'Ces informations permettent à notre chef privé de personnaliser chaque repas exclusivement pour vous.',
+    subtitle: 'Ces informations permettent à notre chef privé de personnaliser chaque repas exclusivement pour vous.',
     steps: ['Profil', 'Restrictions', 'Goûts', 'Matin'],
     returning: 'Déjà client ?',
     emailPlaceholder: 'Entrez votre email pour retrouver votre profil',
     profileFound: '✓ Profil trouvé — vos préférences ont été chargées.',
     profileNotFound: 'Aucun profil trouvé. Veuillez remplir vos préférences ci-dessous.',
-    firstName: 'Prénom',
-    firstNamePlaceholder: 'ex. Alexandra',
-    email: 'Email',
-    emailSub: 'Utilisé pour sauvegarder et retrouver votre profil',
+    firstName: 'Prénom', firstNamePlaceholder: 'ex. Alexandra',
+    email: 'Email', emailSub: 'Utilisé pour sauvegarder et retrouver votre profil',
     emailInputPlaceholder: 'ex. alexandra@email.com',
-    allergies: 'Allergies & intolérances',
-    allergiesPlaceholder: 'ex. Noix, Crustacés, Lactose',
-    dislikes: 'Aliments détestés',
-    dislikesPlaceholder: 'ex. Coriandre, Foie, Ananas',
-    dietary: 'Régimes alimentaires',
-    cuisines: 'Cuisines préférées',
-    favorites: 'Plats & saveurs favoris',
-    favoritesPlaceholder: 'ex. Sushis frais, pâtes fraîches, truffe noire',
-    spirits: 'Alcools forts préférés',
-    spiritsPlaceholder: 'ex. Macallan 18, Grey Goose, Don Julio 1942',
-    cocktails: 'Cocktails préférés',
-    cocktailsPlaceholder: 'ex. Negroni, Mojito, Aperol Spritz',
-    softs: 'Boissons sans alcool',
-    softsPlaceholder: 'ex. San Pellegrino, Fever-Tree Ginger Beer',
-    breakfast: 'Petit-déjeuner préféré',
-    breakfastPlaceholder: 'ex. Oeufs Benedict, fruits frais, granola',
-    juices: 'Jus préférés',
-    juicesPlaceholder: 'ex. Orange pressée, jus vert, pastèque',
-    notes: 'Notes supplémentaires',
-    notesPlaceholder: 'ex. Repas légers le midi, pas de viande rouge le soir',
-    next: 'Continuer',
-    back: 'Retour',
-    submit: 'Envoyer à l équipage',
+    allergies: 'Allergies & intolérances', allergiesPlaceholder: 'ex. Noix, Crustacés, Lactose',
+    dislikes: 'Aliments détestés', dislikesPlaceholder: 'ex. Coriandre, Foie, Ananas',
+    dietary: 'Régimes alimentaires', cuisines: 'Cuisines préférées',
+    favorites: 'Plats & saveurs favoris', favoritesPlaceholder: 'ex. Sushis frais, pâtes fraîches, truffe noire',
+    spirits: 'Alcools forts préférés', spiritsPlaceholder: 'ex. Macallan 18, Grey Goose, Don Julio 1942',
+    cocktails: 'Cocktails préférés', cocktailsPlaceholder: 'ex. Negroni, Mojito, Aperol Spritz',
+    softs: 'Boissons sans alcool', softsPlaceholder: 'ex. San Pellegrino, Fever-Tree Ginger Beer',
+    breakfast: 'Petit-déjeuner préféré', breakfastPlaceholder: 'ex. Oeufs Benedict, fruits frais, granola',
+    juices: 'Jus préférés', juicesPlaceholder: 'ex. Orange pressée, jus vert, pastèque',
+    notes: 'Notes supplémentaires', notesPlaceholder: 'ex. Repas légers le midi, pas de viande rouge le soir',
+    next: 'Continuer', back: 'Retour', submit: 'Envoyer à l equipage',
     thankYou: 'Merci.',
-    thankYouMsg: 'Vos préférences ont été sauvegardées et transmises à l équipage. Notre chef privé veillera à adapter chaque repas à vos goûts.',
-    addGuest: '+ Ajouter un invité',
-    notFound: 'Lien introuvable',
+    thankYouMsg: 'Vos préférences ont été sauvegardées et transmises à l equipage.',
+    addGuest: '+ Ajouter un invité', notFound: 'Lien introuvable',
     notFoundMsg: 'Veuillez contacter votre agence de charter pour obtenir un lien valide.',
     loading: 'Chargement...',
     diets: ["Vegan","Végétarien","Halal","Casher","Keto","Sans gluten","Sans lactose","Paleo","Sans porc"],
@@ -99,44 +69,29 @@ subtitle: 'Ces informations permettent à notre chef privé de personnaliser cha
   it: {
     flag: '🇮🇹',
     title: 'Le tue', titleItalic: 'preferenze', titleEnd: 'culinarie',
-subtitle: 'Queste informazioni permettono al nostro chef di personalizzare ogni esperienza culinaria per te.',
+    subtitle: 'Queste informazioni permettono al nostro chef privato di personalizzare ogni esperienza culinaria esclusivamente per te.',
     steps: ['Profilo', 'Restrizioni', 'Gusti', 'Mattino'],
     returning: 'Già cliente?',
     emailPlaceholder: 'Inserisci la tua email per recuperare il tuo profilo',
     profileFound: '✓ Profilo trovato — le tue preferenze sono state caricate.',
     profileNotFound: 'Nessun profilo trovato. Compila le tue preferenze qui sotto.',
-    firstName: 'Nome',
-    firstNamePlaceholder: 'es. Alexandra',
-    email: 'Email',
-    emailSub: 'Usata per salvare e recuperare il tuo profilo',
+    firstName: 'Nome', firstNamePlaceholder: 'es. Alexandra',
+    email: 'Email', emailSub: 'Usata per salvare e recuperare il tuo profilo',
     emailInputPlaceholder: 'es. alexandra@email.com',
-    allergies: 'Allergie & intolleranze',
-    allergiesPlaceholder: 'es. Noci, Crostacei, Lattosio',
-    dislikes: 'Ingredienti non graditi',
-    dislikesPlaceholder: 'es. Coriandolo, Fegato, Ananas',
-    dietary: 'Requisiti dietetici',
-    cuisines: 'Cucine preferite',
-    favorites: 'Piatti & sapori preferiti',
-    favoritesPlaceholder: 'es. Sashimi fresco, pasta fatta in casa, tartufo nero',
-    spirits: 'Superalcolici preferiti',
-    spiritsPlaceholder: 'es. Macallan 18, Grey Goose, Don Julio 1942',
-    cocktails: 'Cocktail preferiti',
-    cocktailsPlaceholder: 'es. Negroni, Mojito, Aperol Spritz',
-    softs: 'Bevande analcoliche',
-    softsPlaceholder: 'es. San Pellegrino, Fever-Tree Ginger Beer',
-    breakfast: 'Colazione preferita',
-    breakfastPlaceholder: 'es. Uova Benedict, frutta fresca, granola',
-    juices: 'Succhi preferiti',
-    juicesPlaceholder: 'es. Arancia fresca, succo verde, anguria',
-    notes: 'Note aggiuntive',
-    notesPlaceholder: 'es. Pasti leggeri a pranzo, niente carne rossa la sera',
-    next: 'Continua',
-    back: 'Indietro',
-    submit: 'Invia all equipaggio',
+    allergies: 'Allergie & intolleranze', allergiesPlaceholder: 'es. Noci, Crostacei, Lattosio',
+    dislikes: 'Ingredienti non graditi', dislikesPlaceholder: 'es. Coriandolo, Fegato, Ananas',
+    dietary: 'Requisiti dietetici', cuisines: 'Cucine preferite',
+    favorites: 'Piatti & sapori preferiti', favoritesPlaceholder: 'es. Sashimi fresco, pasta fatta in casa, tartufo nero',
+    spirits: 'Superalcolici preferiti', spiritsPlaceholder: 'es. Macallan 18, Grey Goose, Don Julio 1942',
+    cocktails: 'Cocktail preferiti', cocktailsPlaceholder: 'es. Negroni, Mojito, Aperol Spritz',
+    softs: 'Bevande analcoliche', softsPlaceholder: 'es. San Pellegrino, Fever-Tree Ginger Beer',
+    breakfast: 'Colazione preferita', breakfastPlaceholder: 'es. Uova Benedict, frutta fresca, granola',
+    juices: 'Succhi preferiti', juicesPlaceholder: 'es. Arancia fresca, succo verde, anguria',
+    notes: 'Note aggiuntive', notesPlaceholder: 'es. Pasti leggeri a pranzo, niente carne rossa la sera',
+    next: 'Continua', back: 'Indietro', submit: 'Invia all equipaggio',
     thankYou: 'Grazie.',
     thankYouMsg: 'Le tue preferenze sono state salvate e trasmesse all equipaggio.',
-    addGuest: '+ Aggiungi ospite',
-    notFound: 'Link non trovato',
+    addGuest: '+ Aggiungi ospite', notFound: 'Link non trovato',
     notFoundMsg: 'Contatta la tua agenzia charter per ottenere un link valido.',
     loading: 'Caricamento...',
     diets: ["Vegano","Vegetariano","Halal","Kosher","Keto","Senza glutine","Senza lattosio","Paleo","Senza maiale"],
@@ -145,44 +100,29 @@ subtitle: 'Queste informazioni permettono al nostro chef di personalizzare ogni 
   ru: {
     flag: '🇷🇺',
     title: 'Ваши', titleItalic: 'кулинарные', titleEnd: 'предпочтения',
-subtitle: 'Эта информация позволяет нашему шеф-повару персонализировать каждый приём пищи для вас.',
+    subtitle: 'Эта информация позволяет нашему личному шеф-повару персонализировать каждый приём пищи исключительно для вас.',
     steps: ['Профиль', 'Ограничения', 'Вкусы', 'Утро'],
     returning: 'Уже были у нас?',
     emailPlaceholder: 'Введите email для загрузки вашего профиля',
     profileFound: '✓ Профиль найден — ваши предпочтения загружены.',
     profileNotFound: 'Профиль не найден. Заполните предпочтения ниже.',
-    firstName: 'Имя',
-    firstNamePlaceholder: 'напр. Александра',
-    email: 'Email',
-    emailSub: 'Для сохранения и получения вашего профиля',
+    firstName: 'Имя', firstNamePlaceholder: 'напр. Александра',
+    email: 'Email', emailSub: 'Для сохранения и получения вашего профиля',
     emailInputPlaceholder: 'напр. alexandra@email.com',
-    allergies: 'Аллергии & непереносимости',
-    allergiesPlaceholder: 'напр. Орехи, Морепродукты, Лактоза',
-    dislikes: 'Нежелательные ингредиенты',
-    dislikesPlaceholder: 'напр. Кинза, Печень, Ананас',
-    dietary: 'Диетические требования',
-    cuisines: 'Предпочитаемые кухни',
-    favorites: 'Любимые блюда & вкусы',
-    favoritesPlaceholder: 'напр. Свежее сашими, домашняя паста, чёрный трюфель',
-    spirits: 'Крепкие напитки',
-    spiritsPlaceholder: 'напр. Macallan 18, Grey Goose, Don Julio 1942',
-    cocktails: 'Любимые коктейли',
-    cocktailsPlaceholder: 'напр. Негрони, Мохито, Апероль Шприц',
-    softs: 'Безалкогольные напитки',
-    softsPlaceholder: 'напр. San Pellegrino, Fever-Tree Ginger Beer',
-    breakfast: 'Предпочтения по завтраку',
-    breakfastPlaceholder: 'напр. Яйца Бенедикт, свежие фрукты, гранола',
-    juices: 'Любимые соки',
-    juicesPlaceholder: 'напр. Свежий апельсин, зелёный сок, арбуз',
-    notes: 'Дополнительные заметки',
-    notesPlaceholder: 'напр. Лёгкие блюда на обед, без красного мяса вечером',
-    next: 'Продолжить',
-    back: 'Назад',
-    submit: 'Отправить экипажу',
+    allergies: 'Аллергии & непереносимости', allergiesPlaceholder: 'напр. Орехи, Морепродукты, Лактоза',
+    dislikes: 'Нежелательные ингредиенты', dislikesPlaceholder: 'напр. Кинза, Печень, Ананас',
+    dietary: 'Диетические требования', cuisines: 'Предпочитаемые кухни',
+    favorites: 'Любимые блюда & вкусы', favoritesPlaceholder: 'напр. Свежее сашими, домашняя паста, чёрный трюфель',
+    spirits: 'Крепкие напитки', spiritsPlaceholder: 'напр. Macallan 18, Grey Goose, Don Julio 1942',
+    cocktails: 'Любимые коктейли', cocktailsPlaceholder: 'напр. Негрони, Мохито, Апероль Шприц',
+    softs: 'Безалкогольные напитки', softsPlaceholder: 'напр. San Pellegrino, Fever-Tree Ginger Beer',
+    breakfast: 'Предпочтения по завтраку', breakfastPlaceholder: 'напр. Яйца Бенедикт, свежие фрукты, гранола',
+    juices: 'Любимые соки', juicesPlaceholder: 'напр. Свежий апельсин, зелёный сок, арбуз',
+    notes: 'Дополнительные заметки', notesPlaceholder: 'напр. Лёгкие блюда на обед, без красного мяса вечером',
+    next: 'Продолжить', back: 'Назад', submit: 'Отправить экипажу',
     thankYou: 'Спасибо.',
     thankYouMsg: 'Ваши предпочтения сохранены и переданы экипажу.',
-    addGuest: '+ Добавить гостя',
-    notFound: 'Ссылка не найдена',
+    addGuest: '+ Добавить гостя', notFound: 'Ссылка не найдена',
     notFoundMsg: 'Свяжитесь с вашим агентством для получения действительной ссылки.',
     loading: 'Загрузка...',
     diets: ["Веган","Вегетарианец","Халяль","Кошер","Кето","Без глютена","Без лактозы","Палео","Без свинины"],
@@ -198,24 +138,10 @@ function StepIndicator({ current, total, labels }) {
       <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'0',marginBottom:'12px'}}>
         {Array.from({length: total}).map((_, i) => (
           <div key={i} style={{display:'flex',alignItems:'center'}}>
-            <div style={{
-              width:'28px',height:'28px',borderRadius:'50%',
-              display:'flex',alignItems:'center',justifyContent:'center',
-              fontSize:'11px',fontWeight:'600',
-              background: i < current ? 'var(--accent)' : i === current ? 'var(--ink)' : 'transparent',
-              color: i <= current ? '#fff' : 'var(--muted)',
-              border: i > current ? '1px solid var(--border)' : 'none',
-              transition:'all .3s'
-            }}>
+            <div style={{width:'28px',height:'28px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',fontWeight:'600',background: i < current ? 'var(--accent)' : i === current ? 'var(--ink)' : 'transparent',color: i <= current ? '#fff' : 'var(--muted)',border: i > current ? '1px solid var(--border)' : 'none',transition:'all .3s'}}>
               {i < current ? '✓' : i + 1}
             </div>
-            {i < total - 1 && (
-              <div style={{
-                width:'48px',height:'1px',
-                background: i < current ? 'var(--accent)' : 'var(--border)',
-                transition:'all .3s'
-              }}/>
-            )}
+            {i < total - 1 && <div style={{width:'48px',height:'1px',background: i < current ? 'var(--accent)' : 'var(--border)',transition:'all .3s'}}/>}
           </div>
         ))}
       </div>
@@ -241,8 +167,7 @@ function TagInput({ placeholder, tags, onAdd, onRemove, className }) {
   )
 }
 
-function GuestForm({ guest, onChange, t, onSubmit, isLast }) {
-  const [step, setStep] = useState(0)
+function GuestForm({ guest, onChange, t, onSubmit, step, setStep }) {
   const [emailLookup, setEmailLookup] = useState('')
   const [lookupStatus, setLookupStatus] = useState('')
 
@@ -260,8 +185,7 @@ function GuestForm({ guest, onChange, t, onSubmit, isLast }) {
   }
 
   const steps = [
-    // STEP 1 — PROFILE
-    <div key="step1" style={{animation:'fadeSlide .4s ease'}}>
+    <div key="s1" style={{animation:'fadeSlide .4s ease'}}>
       <div className="section">
         <div className="section-label">{t.returning}</div>
         <div className="tag-row">
@@ -283,8 +207,7 @@ function GuestForm({ guest, onChange, t, onSubmit, isLast }) {
       </div>
     </div>,
 
-    // STEP 2 — RESTRICTIONS
-    <div key="step2" style={{animation:'fadeSlide .4s ease'}}>
+    <div key="s2" style={{animation:'fadeSlide .4s ease'}}>
       <div className="section">
         <div className="section-label">{t.allergies}</div>
         <TagInput placeholder={t.allergiesPlaceholder} tags={guest.allergies} onAdd={v => onChange({ ...guest, allergies: [...guest.allergies, v] })} onRemove={v => onChange({ ...guest, allergies: guest.allergies.filter(a => a !== v) })} className="danger"/>
@@ -299,8 +222,7 @@ function GuestForm({ guest, onChange, t, onSubmit, isLast }) {
       </div>
     </div>,
 
-    // STEP 3 — TASTES
-    <div key="step3" style={{animation:'fadeSlide .4s ease'}}>
+    <div key="s3" style={{animation:'fadeSlide .4s ease'}}>
       <div className="section">
         <div className="section-label">{t.cuisines}</div>
         <div className="chips">{t.cuisineList.map(item => <span key={item} className={`chip ${guest.cuisines.includes(item)?'on':''}`} onClick={() => toggleChip('cuisine',item)}>{item}</span>)}</div>
@@ -323,8 +245,7 @@ function GuestForm({ guest, onChange, t, onSubmit, isLast }) {
       </div>
     </div>,
 
-    // STEP 4 — MORNING
-    <div key="step4" style={{animation:'fadeSlide .4s ease'}}>
+    <div key="s4" style={{animation:'fadeSlide .4s ease'}}>
       <div className="section">
         <div className="section-label">{t.breakfast}</div>
         <div className="field"><textarea placeholder={t.breakfastPlaceholder} value={guest.breakfast||''} onChange={e => onChange({ ...guest, breakfast: e.target.value })}/></div>
@@ -346,12 +267,12 @@ function GuestForm({ guest, onChange, t, onSubmit, isLast }) {
       {steps[step]}
       <div style={{display:'flex',gap:'12px',marginTop:'32px'}}>
         {step > 0 && (
-          <button onClick={() => setStep(s => s-1)} style={{flex:1,padding:'14px',background:'transparent',color:'var(--ink)',border:'1px solid var(--border)',cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontSize:'12px',fontWeight:'500',letterSpacing:'.1em',textTransform:'uppercase',borderRadius:'1px',transition:'all .2s'}}>
+          <button onClick={() => setStep(step - 1)} style={{flex:1,padding:'14px',background:'transparent',color:'var(--ink)',border:'1px solid var(--border)',cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontSize:'12px',fontWeight:'500',letterSpacing:'.1em',textTransform:'uppercase',borderRadius:'1px',transition:'all .2s'}}>
             {t.back}
           </button>
         )}
         {step < 3 ? (
-          <button onClick={() => setStep(s => s+1)} className="btn-primary" style={{flex:1,margin:0}}>
+          <button onClick={() => setStep(step + 1)} className="btn-primary" style={{flex:1,margin:0}}>
             {t.next} →
           </button>
         ) : (
@@ -371,7 +292,11 @@ export default function GuestPage() {
   const [notFound, setNotFound] = useState(false)
   const [guests, setGuests] = useState([emptyGuest()])
   const [activeGuest, setActiveGuest] = useState(0)
+  const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+ useEffect(() => {
+  setStep(0)
+}, [activeGuest])
   const t = TRANSLATIONS[lang]
 
   useEffect(() => {
@@ -386,12 +311,14 @@ export default function GuestPage() {
   const addGuest = () => {
     setGuests([...guests, emptyGuest()])
     setActiveGuest(guests.length)
+    setStep(0)
   }
 
   const removeGuest = (index) => {
     const updated = guests.filter((_, i) => i !== index)
     setGuests(updated)
     setActiveGuest(Math.max(0, activeGuest - 1))
+    setStep(0)
   }
 
   const updateGuest = (index, data) => {
@@ -469,13 +396,13 @@ export default function GuestPage() {
         {!submitted ? (
           <div>
             <div className="page-header">
-             <h1>{t.title} <em>{t.titleItalic}</em><br/>{t.titleEnd}</h1>
-<p>{t.subtitle}</p>
+              <h1>{t.title} <em>{t.titleItalic}</em><br/>{t.titleEnd}</h1>
+              <p>{t.subtitle}</p>
             </div>
 
             <div style={{display:'flex',gap:'8px',marginBottom:'40px',flexWrap:'wrap'}}>
               {guests.map((g, i) => (
-                <div key={i} onClick={() => setActiveGuest(i)} style={{padding:'7px 16px',cursor:'pointer',borderRadius:'20px',border:`1px solid ${activeGuest===i ? 'var(--accent)' : 'var(--border)'}`,background: activeGuest===i ? 'var(--accent)' : '#fff',color: activeGuest===i ? '#fff' : 'var(--muted)',fontSize:'12px',fontWeight:'500',display:'flex',alignItems:'center',gap:'8px',transition:'all .2s'}}>
+                <div key={i} onClick={() => { setStep(0); setActiveGuest(i) }} style={{padding:'7px 16px',cursor:'pointer',borderRadius:'20px',border:`1px solid ${activeGuest===i ? 'var(--accent)' : 'var(--border)'}`,background: activeGuest===i ? 'var(--accent)' : '#fff',color: activeGuest===i ? '#fff' : 'var(--muted)',fontSize:'12px',fontWeight:'500',display:'flex',alignItems:'center',gap:'8px',transition:'all .2s'}}>
                   {g.name || `Guest ${i+1}`}
                   {guests.length > 1 && <span onClick={e => { e.stopPropagation(); removeGuest(i) }} style={{opacity:.6,cursor:'pointer',fontSize:'14px'}}>×</span>}
                 </div>
@@ -485,12 +412,16 @@ export default function GuestPage() {
               </button>
             </div>
 
-            <GuestForm
-              guest={guests[activeGuest]}
-              onChange={data => updateGuest(activeGuest, data)}
-              t={t}
-              onSubmit={submitAll}
-            />
+           <GuestForm
+  key={activeGuest}
+  guest={guests[activeGuest]}
+  onChange={data => updateGuest(activeGuest, data)}
+  t={t}
+  onSubmit={submitAll}
+  step={step}
+  setStep={setStep}
+/>
+            
           </div>
         ) : (
           <div style={{paddingTop:'80px',textAlign:'center'}}>
