@@ -236,7 +236,7 @@ export default function CrewPage() {
       "",
       "1. [APPROVED] / [NOT RECOMMENDED] / [ADJUST]",
       "2. Dish name — one line",
-      "3. One line per guest: '✓ Arthur — no changes' or '✓ Charlotte — dressing on the side'",
+      "3. One line per guest: '✓ Arthur — no changes' or '✓ Charlotte — dressing on the side'. If no changes, write ONLY '✓ [name] — no changes'. Nothing else. No parentheses, no clarifications.",
       "4. One sentence of explanation maximum",
       "",
       "Keep responses SHORT. The chef reads this in 5 seconds between two pans.",
