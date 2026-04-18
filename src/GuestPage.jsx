@@ -24,9 +24,7 @@ const TRANSLATIONS = {
     cocktails: 'Favourite Cocktails', cocktailsPlaceholder: 'e.g. Negroni, Mojito, Aperol Spritz',
     softs: 'Soft Drinks', softsPlaceholder: 'e.g. San Pellegrino, Fever-Tree Ginger Beer',
     mealTimes: 'Preferred Meal Times',
-    breakfastTime: 'Breakfast',
-    lunchTime: 'Lunch',
-    dinnerTime: 'Dinner',
+    breakfastTime: 'Breakfast', lunchTime: 'Lunch', dinnerTime: 'Dinner',
     breakfast: 'Breakfast Preferences', breakfastPlaceholder: 'e.g. Eggs Benedict, fresh fruit, granola',
     juices: 'Favourite Juices', juicesPlaceholder: 'e.g. Fresh orange, green juice, watermelon',
     notes: 'Additional Notes', notesPlaceholder: 'e.g. Lighter meals at lunch, no red meat in the evening',
@@ -59,15 +57,13 @@ const TRANSLATIONS = {
     cocktails: 'Cocktails préférés', cocktailsPlaceholder: 'ex. Negroni, Mojito, Aperol Spritz',
     softs: 'Boissons sans alcool', softsPlaceholder: 'ex. San Pellegrino, Fever-Tree Ginger Beer',
     mealTimes: 'Horaires des repas',
-    breakfastTime: 'Petit-déjeuner',
-    lunchTime: 'Déjeuner',
-    dinnerTime: 'Dîner',
+    breakfastTime: 'Petit-déjeuner', lunchTime: 'Déjeuner', dinnerTime: 'Dîner',
     breakfast: 'Préférences petit-déjeuner', breakfastPlaceholder: 'ex. Oeufs Benedict, fruits frais, granola',
     juices: 'Jus préférés', juicesPlaceholder: 'ex. Orange pressée, jus vert, pastèque',
     notes: 'Notes supplémentaires', notesPlaceholder: 'ex. Repas légers le midi, pas de viande rouge le soir',
-    next: 'Continuer', back: 'Retour', submit: 'Envoyer à l equipage',
+    next: 'Continuer', back: 'Retour', submit: 'Envoyer à l équipage',
     thankYou: 'Merci.',
-    thankYouMsg: 'Vos préférences ont été sauvegardées et transmises à l equipage.',
+    thankYouMsg: 'Vos préférences ont été sauvegardées et transmises à l équipage.',
     addGuest: '+ Ajouter un invité', notFound: 'Lien introuvable',
     notFoundMsg: 'Veuillez contacter votre agence de charter pour obtenir un lien valide.',
     loading: 'Chargement...',
@@ -94,9 +90,7 @@ const TRANSLATIONS = {
     cocktails: 'Cocktail preferiti', cocktailsPlaceholder: 'es. Negroni, Mojito, Aperol Spritz',
     softs: 'Bevande analcoliche', softsPlaceholder: 'es. San Pellegrino, Fever-Tree Ginger Beer',
     mealTimes: 'Orari dei pasti preferiti',
-    breakfastTime: 'Colazione',
-    lunchTime: 'Pranzo',
-    dinnerTime: 'Cena',
+    breakfastTime: 'Colazione', lunchTime: 'Pranzo', dinnerTime: 'Cena',
     breakfast: 'Preferenze colazione', breakfastPlaceholder: 'es. Uova Benedict, frutta fresca, granola',
     juices: 'Succhi preferiti', juicesPlaceholder: 'es. Arancia fresca, succo verde, anguria',
     notes: 'Note aggiuntive', notesPlaceholder: 'es. Pasti leggeri a pranzo, niente carne rossa la sera',
@@ -129,9 +123,7 @@ const TRANSLATIONS = {
     cocktails: 'Любимые коктейли', cocktailsPlaceholder: 'напр. Негрони, Мохито, Апероль Шприц',
     softs: 'Безалкогольные напитки', softsPlaceholder: 'напр. San Pellegrino, Fever-Tree Ginger Beer',
     mealTimes: 'Предпочтительное время приёма пищи',
-    breakfastTime: 'Завтрак',
-    lunchTime: 'Обед',
-    dinnerTime: 'Ужин',
+    breakfastTime: 'Завтрак', lunchTime: 'Обед', dinnerTime: 'Ужин',
     breakfast: 'Предпочтения по завтраку', breakfastPlaceholder: 'напр. Яйца Бенедикт, свежие фрукты, гранола',
     juices: 'Любимые соки', juicesPlaceholder: 'напр. Свежий апельсин, зелёный сок, арбуз',
     notes: 'Дополнительные заметки', notesPlaceholder: 'напр. Лёгкие блюда на обед, без красного мяса вечером',
@@ -153,9 +145,7 @@ function TimeSelector({ label, value, onChange }) {
   const minutes = ['00', '15', '30', '45']
   const [hour, setHour] = useState(value ? parseInt(value.split(':')[0]) : 8)
   const [minute, setMinute] = useState(value ? value.split(':')[1] : '00')
-
   const update = (h, m) => onChange(`${String(h).padStart(2,'0')}:${m}`)
-
   return (
     <div style={{marginBottom:'16px'}}>
       <div style={{fontSize:'10px',fontWeight:'500',letterSpacing:'.14em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'8px'}}>{label}</div>
@@ -359,14 +349,12 @@ export default function GuestPage() {
   const addGuest = () => {
     setGuests([...guests, emptyGuest()])
     setActiveGuest(guests.length)
-    setStep(0)
   }
 
   const removeGuest = (index) => {
     const updated = guests.filter((_, i) => i !== index)
     setGuests(updated)
     setActiveGuest(Math.max(0, activeGuest - 1))
-    setStep(0)
   }
 
   const updateGuest = (index, data) => {
