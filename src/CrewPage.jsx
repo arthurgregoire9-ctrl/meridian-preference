@@ -71,8 +71,8 @@ export default function CrewPage() {
     if (selectedGuests.length === 0) return "You are the private chef assistant aboard an ultra-luxury superyacht. No guest selected. Respond in English, be concise and professional."
     const profiles = selectedGuests.map(p => [
       "--- GUEST: " + p.name + " ---",
-      p.allergies?.length ? "CRITICAL ALLERGIES: " + p.allergies.join(", ") : "",
-      p.dislikes?.length  ? "Dislikes: " + p.dislikes.join(", ") : "",
+      p.allergies?.length ? "⚠️ CRITICAL ALLERGIES (life-threatening, never include): " + p.allergies.join(", ") : "",
+      p.dislikes?.length  ? "🚫 STRICTLY FORBIDDEN INGREDIENTS (never use, same priority as allergies, not even as garnish, sauce or minor component): " + p.dislikes.join(", ") : "",
       p.diets?.length     ? "Dietary requirements: " + p.diets.join(", ") : "",
       p.cuisines?.length  ? "Preferred cuisines: " + p.cuisines.join(", ") : "",
       p.favorites         ? "Favourites: " + p.favorites : "",
@@ -90,6 +90,11 @@ export default function CrewPage() {
       "You are the private chef assistant aboard an ultra-luxury superyacht.",
       "Your role is to help the chef plan meals that work for the ENTIRE TABLE.",
       "",
+      "ABSOLUTE RULES — NEVER BREAK THESE:",
+      "1. Allergies are life-threatening — never include any allergen even in traces.",
+      "2. Dislikes must be treated with the SAME strictness as allergies. Never include a disliked ingredient in any dish, even as a garnish, sauce, or minor component. If a guest dislikes tomatoes, there must be zero tomatoes anywhere in the dish.",
+      "3. Always double-check every ingredient of every dish against every guest's forbidden list before proposing.",
+      "",
       selectedGuests.length > 1
         ? "CRITICAL RULE: When multiple guests are selected, ALWAYS suggest ONE single dish that works for the whole table. Never propose different dishes per guest — a yacht chef cooks one meal for everyone. Identify the common ground between all guest profiles and build from there. If there are conflicts, suggest minor adaptations (e.g. sauce on the side, garnish omitted, alternative protein for one guest) while keeping the same core dish for all. Always flag critical allergies by guest name."
         : "Analyse the dish idea against this guest profile.",
@@ -98,6 +103,21 @@ export default function CrewPage() {
       "",
       "FORMAT: Always open with [APPROVED], [NOT RECOMMENDED] or [ADJUST]. Then explain your reasoning in 3-4 sentences maximum. If multiple guests, always think in terms of one unified dish with minor individual adaptations where needed.",
     ].join("\n")
+  }
+
+  const cleanText = (text) => {
+    return text
+      .replace(/\[APPROVED\]|\[NOT RECOMMENDED\]|\[ADJUST\]/g, '')
+      .replace(/^### (.+)$/gm, '<h4 style="font-family:Cormorant Garamond,serif;font-size:18px;font-weight:400;margin:20px 0 8px;color:#1a3a5c;">$1</h4>')
+      .replace(/^## (.+)$/gm, '<h3 style="font-family:Cormorant Garamond,serif;font-size:20px;font-weight:400;margin:24px 0 10px;color:#1a3a5c;border-bottom:1px solid #e8e0d5;padding-bottom:6px;">$1</h3>')
+      .replace(/^# (.+)$/gm, '<h2 style="font-family:Cormorant Garamond,serif;font-size:24px;font-weight:300;margin:28px 0 12px;color:#1a3a5c;">$1</h2>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/^- (.+)$/gm, '<div style="display:flex;gap:10px;margin:4px 0;"><span style="color:#1a3a5c;flex-shrink:0;">—</span><span>$1</span></div>')
+      .replace(/^• (.+)$/gm, '<div style="display:flex;gap:10px;margin:4px 0;"><span style="color:#1a3a5c;flex-shrink:0;">—</span><span>$1</span></div>')
+      .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid #e8e0d5;margin:16px 0;"/>')
+      .replace(/\n\n/g, '<div style="margin-top:12px;"></div>')
+      .trim()
   }
 
   const sendMsg = async (preset) => {
@@ -138,20 +158,6 @@ export default function CrewPage() {
     return null
   }
 
- const cleanText = (text) => {
-  return text
-    .replace(/\[APPROVED\]|\[NOT RECOMMENDED\]|\[ADJUST\]/g, '')
-    .replace(/^### (.+)$/gm, '<h4 style="font-family:Cormorant Garamond,serif;font-size:18px;font-weight:400;margin:20px 0 8px;color:#1a3a5c;">$1</h4>')
-    .replace(/^## (.+)$/gm, '<h3 style="font-family:Cormorant Garamond,serif;font-size:20px;font-weight:400;margin:24px 0 10px;color:#1a3a5c;border-bottom:1px solid #e8e0d5;padding-bottom:6px;">$1</h3>')
-    .replace(/^# (.+)$/gm, '<h2 style="font-family:Cormorant Garamond,serif;font-size:24px;font-weight:300;margin:28px 0 12px;color:#1a3a5c;">$1</h2>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/^- (.+)$/gm, '<div style="display:flex;gap:10px;margin:4px 0;"><span style="color:#1a3a5c;flex-shrink:0;">—</span><span>$1</span></div>')
-    .replace(/^• (.+)$/gm, '<div style="display:flex;gap:10px;margin:4px 0;"><span style="color:#1a3a5c;flex-shrink:0;">—</span><span>$1</span></div>')
-    .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid #e8e0d5;margin:16px 0;"/>')
-    .replace(/\n\n/g, '<div style="margin-top:12px;"></div>')
-    .trim()
-}
   if (!unlocked) {
     return (
       <>
@@ -221,6 +227,7 @@ export default function CrewPage() {
                         <div>
                           <div style={{fontFamily:'Cormorant Garamond, serif',fontSize:'16px'}}>{g.name}</div>
                           {g.allergies?.length > 0 && <div style={{fontSize:'11px',color: isSelected ? 'rgba(255,255,255,0.8)' : 'var(--danger)',marginTop:'4px'}}>⚠️ {g.allergies.join(', ')}</div>}
+                          {g.dislikes?.length > 0 && <div style={{fontSize:'11px',color: isSelected ? 'rgba(255,255,255,0.7)' : 'var(--muted)',marginTop:'2px'}}>🚫 {g.dislikes.join(', ')}</div>}
                         </div>
                       </div>
                     </div>
@@ -245,7 +252,10 @@ export default function CrewPage() {
                       <div className="avatar">{msg.role==='user' ? '👨‍🍳' : '🤖'}</div>
                       <div className="bubble">
                         {verdict && <div className={`verdict ${verdict.cls}`}>{verdict.label}</div>}
-                      <div dangerouslySetInnerHTML={{__html: msg.role==='ai' ? cleanText(msg.text) : msg.text}}/> 
+                        {msg.role==='ai'
+                          ? <div dangerouslySetInnerHTML={{__html: cleanText(msg.text)}}/>
+                          : <div>{msg.text}</div>
+                        }
                       </div>
                     </div>
                   )
@@ -262,7 +272,7 @@ export default function CrewPage() {
                 <button className="send-btn" disabled={isLoading || selectedGuests.length === 0} onClick={() => sendMsg()}>↑</button>
               </div>
               <div className="suggestions">
-                {["Tuna tartare with avocado?","Truffle risotto tonight?","Cheese selection for dessert?","Prime rib for tomorrow?"].map(s => (
+                {["Tuna tartare with avocado?","Truffle risotto tonight?","Full week menu plan?","Shopping list for 7 days?"].map(s => (
                   <button key={s} className="sug" onClick={() => sendMsg(s)} disabled={selectedGuests.length === 0}>{s}</button>
                 ))}
               </div>
