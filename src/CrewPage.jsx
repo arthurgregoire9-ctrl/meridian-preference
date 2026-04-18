@@ -69,54 +69,75 @@ export default function CrewPage() {
 
   const buildSystem = () => {
     if (selectedGuests.length === 0) return "You are the private chef assistant aboard an ultra-luxury superyacht. No guest selected. Respond in English, be concise and professional."
+    
     const profiles = selectedGuests.map(p => [
-      "--- GUEST: " + p.name + " ---",
-      p.allergies?.length ? "⚠️ CRITICAL ALLERGIES (life-threatening, never include): " + p.allergies.join(", ") : "",
-      p.dislikes?.length  ? "🚫 STRICTLY FORBIDDEN INGREDIENTS (never use, same priority as allergies, not even as garnish, sauce or minor component): " + p.dislikes.join(", ") : "",
-      p.diets?.length     ? "Dietary requirements: " + p.diets.join(", ") : "",
-      p.cuisines?.length  ? "Preferred cuisines: " + p.cuisines.join(", ") : "",
+      "GUEST: " + p.name,
+      p.allergies?.length ? "⚠️ ALLERGIES (life-threatening): " + p.allergies.join(", ") : "",
+      p.dislikes?.length  ? "🚫 NEVER USE (zero tolerance — not even as garnish, sauce, or trace): " + p.dislikes.join(", ") : "",
+      p.diets?.length     ? "Diet: " + p.diets.join(", ") : "",
+      p.cuisines?.length  ? "Loves: " + p.cuisines.join(", ") : "",
       p.favorites         ? "Favourites: " + p.favorites : "",
       p.spirits           ? "Spirits: " + p.spirits : "",
       p.cocktails         ? "Cocktails: " + p.cocktails : "",
-      p.softs             ? "Soft drinks: " + p.softs : "",
-      p.breakfast         ? "Breakfast preferences: " + p.breakfast : "",
+      p.softs             ? "Softs: " + p.softs : "",
+      p.breakfast         ? "Breakfast prefs: " + p.breakfast : "",
       p.breakfast_time    ? "Breakfast time: " + p.breakfast_time : "",
       p.lunch_time        ? "Lunch time: " + p.lunch_time : "",
       p.dinner_time       ? "Dinner time: " + p.dinner_time : "",
       p.juices            ? "Juices: " + p.juices : "",
       p.notes             ? "Notes: " + p.notes : "",
-    ].filter(Boolean).join("\n")).join("\n\n")
+    ].filter(Boolean).join(" | ")).join("\n")
+
     return [
-      "You are the private chef assistant aboard an ultra-luxury superyacht.",
-      "Your role is to help the chef plan meals that work for the ENTIRE TABLE.",
+      "You are a private chef assistant aboard an ultra-luxury superyacht.",
       "",
-      "ABSOLUTE RULES — NEVER BREAK THESE:",
-      "1. Allergies are life-threatening — never include any allergen even in traces.",
-      "2. Dislikes must be treated with the SAME strictness as allergies. Never include a disliked ingredient in any dish, even as a garnish, sauce, or minor component. If a guest dislikes tomatoes, there must be zero tomatoes anywhere in the dish.",
-      "3. Always double-check every ingredient of every dish against every guest's forbidden list before proposing.",
-      "",
-      selectedGuests.length > 1
-        ? "CRITICAL RULE: When multiple guests are selected, ALWAYS suggest ONE single dish that works for the whole table. Never propose different dishes per guest — a yacht chef cooks one meal for everyone. Identify the common ground between all guest profiles and build from there. If there are conflicts, suggest minor adaptations (e.g. sauce on the side, garnish omitted, alternative protein for one guest) while keeping the same core dish for all. Always flag critical allergies by guest name."
-        : "Analyse the dish idea against this guest profile.",
-      "",
+      "GUEST PROFILES:",
       profiles,
       "",
-      "FORMAT: Always open with [APPROVED], [NOT RECOMMENDED] or [ADJUST]. Then explain your reasoning in 3-4 sentences maximum. If multiple guests, always think in terms of one unified dish with minor individual adaptations where needed.",
+      "YOUR MISSION:",
+      "Help the chef plan meals. When asked about a dish, validate it. When asked for a menu or shopping list, generate it fully.",
+      "",
+      "ABSOLUTE RULES — NEVER BREAK:",
+      "1. Allergies = life-threatening. Zero tolerance.",
+      "2. Dislikes = same strictness as allergies. Never include, even in sauce, garnish, or trace.",
+      "3. Always mentally check EVERY ingredient of EVERY dish against EVERY guest's forbidden list before responding.",
+      "",
+      "DISH COHERENCE RULES (most important):",
+      "- ONE dish name for the whole table. The dish must be IDENTICAL for all guests.",
+      "- Only MINOR adaptations per guest: remove a topping, sauce on the side, swap a protein.",
+      "- NEVER create a completely different dish for one guest.",
+      "- GOOD EXAMPLE: Base = Truffle risotto. Charlotte → same risotto, no parmesan. Chloé → same risotto, extra mushrooms instead of chicken.",
+      "- BAD EXAMPLE: 'For Chloé, a green salad instead.' — This is WRONG. The dish must remain a risotto for everyone.",
+      "- If a guest is vegetarian, find a dish that is naturally vegetarian or easily made so — do not give them a separate dish.",
+      "- If a dish truly cannot work for one guest even with minor adaptations, say so clearly and suggest a different base dish for everyone.",
+      "",
+      "SHOPPING LIST RULES:",
+      "- When asked for a shopping list, generate a complete, organised list by category.",
+      "- Include exact quantities based on number of guests and days.",
+      "- Respect all forbidden ingredients — never include them in the shopping list.",
+      "- Categories: Proteins, Vegetables & Fruits, Dairy, Dry Goods, Beverages & Spirits, Herbs & Spices, Condiments.",
+      "",
+      "RESPONSE FORMAT for dish validation (mandatory):",
+      "1. [APPROVED] / [NOT RECOMMENDED] / [ADJUST]",
+      "2. Dish name — one line",
+      "3. One line per guest: '✓ Arthur — no changes' or '✓ Charlotte — dressing on the side'",
+      "4. One sentence of explanation maximum",
+      "",
+      "Keep responses SHORT and easy to read. The chef reads this in 5 seconds between two pans.",
     ].join("\n")
   }
 
   const cleanText = (text) => {
     return text
       .replace(/\[APPROVED\]|\[NOT RECOMMENDED\]|\[ADJUST\]/g, '')
-      .replace(/^### (.+)$/gm, '<h4 style="font-family:Cormorant Garamond,serif;font-size:18px;font-weight:400;margin:20px 0 8px;color:#1a3a5c;">$1</h4>')
-      .replace(/^## (.+)$/gm, '<h3 style="font-family:Cormorant Garamond,serif;font-size:20px;font-weight:400;margin:24px 0 10px;color:#1a3a5c;border-bottom:1px solid #e8e0d5;padding-bottom:6px;">$1</h3>')
-      .replace(/^# (.+)$/gm, '<h2 style="font-family:Cormorant Garamond,serif;font-size:24px;font-weight:300;margin:28px 0 12px;color:#1a3a5c;">$1</h2>')
+      .replace(/\|.+\|/g, '')
+      .replace(/^#{1,3} (.+)$/gm, '<div style="font-family:Cormorant Garamond,serif;font-size:18px;font-weight:500;margin:16px 0 6px;color:#1a3a5c;">$1</div>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/^- (.+)$/gm, '<div style="display:flex;gap:10px;margin:4px 0;"><span style="color:#1a3a5c;flex-shrink:0;">—</span><span>$1</span></div>')
-      .replace(/^• (.+)$/gm, '<div style="display:flex;gap:10px;margin:4px 0;"><span style="color:#1a3a5c;flex-shrink:0;">—</span><span>$1</span></div>')
-      .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid #e8e0d5;margin:16px 0;"/>')
-      .replace(/\n\n/g, '<div style="margin-top:12px;"></div>')
+      .replace(/^[-•] (.+)$/gm, '<div style="display:flex;gap:8px;margin:3px 0;"><span style="color:#1a3a5c;flex-shrink:0;">—</span><span>$1</span></div>')
+      .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid #e8e0d5;margin:12px 0;"/>')
+      .replace(/\n\n/g, '<div style="margin-top:10px;"></div>')
+      .replace(/\n/g, '<br/>')
       .trim()
   }
 
@@ -242,7 +263,7 @@ export default function CrewPage() {
                   <div className="chat-welcome">
                     <div className="ico">🍽️</div>
                     <h3>Good evening, Chef</h3>
-                    <p>{selectedGuests.length > 0 ? `Analysing for ${selectedGuests.length} guest${selectedGuests.length > 1 ? 's' : ''}. Propose a dish.` : 'Select one or more guest profiles to begin.'}</p>
+                    <p>{selectedGuests.length > 0 ? `Analysing for ${selectedGuests.length} guest${selectedGuests.length > 1 ? 's' : ''}. Propose a dish or ask for a menu.` : 'Select one or more guest profiles to begin.'}</p>
                   </div>
                 )}
                 {messages.map((msg, i) => {
@@ -268,11 +289,11 @@ export default function CrewPage() {
                 )}
               </div>
               <div className="chat-input-row">
-                <input placeholder="e.g. Tuna tartare with avocado as a starter?" value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key==='Enter' && sendMsg()} disabled={selectedGuests.length === 0}/>
+                <input placeholder="e.g. Truffle risotto tonight?" value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key==='Enter' && sendMsg()} disabled={selectedGuests.length === 0}/>
                 <button className="send-btn" disabled={isLoading || selectedGuests.length === 0} onClick={() => sendMsg()}>↑</button>
               </div>
               <div className="suggestions">
-                {["Tuna tartare with avocado?","Truffle risotto tonight?","Full week menu plan?","Shopping list for 7 days?"].map(s => (
+                {["Truffle risotto tonight?","Full week menu plan?","Shopping list for 7 days?","Dessert ideas?"].map(s => (
                   <button key={s} className="sug" onClick={() => sendMsg(s)} disabled={selectedGuests.length === 0}>{s}</button>
                 ))}
               </div>
