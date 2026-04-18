@@ -118,7 +118,7 @@ export default function CrewPage() {
           "anthropic-version": "2023-06-01",
           "anthropic-dangerous-direct-browser-access": "true"
         },
-        body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 1000, system: buildSystem(), messages: updatedHistory })
+        body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 4000, system: buildSystem(), messages: updatedHistory })
       })
       const data = await res.json()
       if (data.error) throw new Error(data.error.message)
