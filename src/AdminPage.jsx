@@ -79,12 +79,18 @@ export default function AdminPage() {
   }
 
   const deleteYacht = async (yachtId) => {
-    if (!window.confirm('Delete this yacht? Charters will be deleted but guest profiles will be preserved.')) return
-    await supabase.from('charters').delete().eq('yacht_id', yachtId)
-    await supabase.from('yachts').delete().eq('id', yachtId)
-    if (selectedYacht?.id === yachtId) { setSelectedYacht(null); setCharters([]) }
-    await fetchYachts()
+  if (!window.confirm('Delete this yacht? Charters will be deleted but guest profiles will be preserved.')) return
+  const { data: charterData } = await supabase.from('charters').select('id').eq('yacht_id', yachtId)
+  if (charterData) {
+    for (const charter of charterData) {
+      await supabase.from('guests').update({ charter_id: null }).eq('charter_id', charter.id)
+    }
   }
+  await supabase.from('charters').delete().eq('yacht_id', yachtId)
+  await supabase.from('yachts').delete().eq('id', yachtId)
+  if (selectedYacht?.id === yachtId) { setSelectedYacht(null); setCharters([]) }
+  await fetchYachts()
+}
 
   const baseUrl = window.location.origin
 
