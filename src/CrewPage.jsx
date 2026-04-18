@@ -5,6 +5,88 @@ import { createClient } from "@supabase/supabase-js"
 const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtcWdieGpuZmtqbmtwZmlyZmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDA0NzYsImV4cCI6MjA5MTY3NjQ3Nn0.y16FCg_HXkd7Ua_CU7K2o5Kd-QuEXxbz18hZsj4GaHI")
 const ANTHROPIC_KEY = import.meta.env.VITE_ANTHROPIC_KEY
 
+function GuestCard({ g, isSelected, onToggle }) {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <div style={{marginBottom:'8px',border:`1px solid ${isSelected ? 'var(--accent)' : 'var(--border)'}`,borderRadius:'2px',background: isSelected ? 'var(--accent)' : '#fff',transition:'all .2s'}}>
+      <div onClick={onToggle} style={{padding:'10px 12px',cursor:'pointer'}}>
+        <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+          <div style={{width:'16px',height:'16px',borderRadius:'3px',border:`1px solid ${isSelected ? '#fff' : 'var(--border)'}`,background: isSelected ? '#fff' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            {isSelected && <span style={{color:'var(--accent)',fontSize:'12px',fontWeight:'bold'}}>✓</span>}
+          </div>
+          <div style={{flex:1}}>
+            <div style={{fontFamily:'Cormorant Garamond, serif',fontSize:'17px',color: isSelected ? '#fff' : 'var(--ink)'}}>{g.name}</div>
+            {g.allergies?.length > 0 && <div style={{fontSize:'11px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--danger)',marginTop:'3px'}}>⚠️ {g.allergies.join(', ')}</div>}
+            {g.dislikes?.length > 0 && <div style={{fontSize:'11px',color: isSelected ? 'rgba(255,255,255,0.7)' : 'var(--muted)',marginTop:'2px'}}>🚫 {g.dislikes.join(', ')}</div>}
+            {g.diets?.length > 0 && <div style={{fontSize:'11px',color: isSelected ? 'rgba(255,255,255,0.7)' : 'var(--accent)',marginTop:'2px'}}>🥗 {g.diets.join(', ')}</div>}
+          </div>
+          <div onClick={e => { e.stopPropagation(); setExpanded(!expanded) }} style={{fontSize:'11px',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',cursor:'pointer',padding:'2px 6px',border:`1px solid ${isSelected ? 'rgba(255,255,255,0.3)' : 'var(--border)'}`,borderRadius:'2px',flexShrink:0}}>
+            {expanded ? '▲' : '▼'}
+          </div>
+        </div>
+      </div>
+
+      {expanded && (
+        <div style={{padding:'0 12px 12px',borderTop:`1px solid ${isSelected ? 'rgba(255,255,255,0.2)' : 'var(--border)'}`,marginTop:'4px'}}>
+          {(g.breakfast_time || g.lunch_time || g.dinner_time) && (
+            <div style={{marginTop:'10px'}}>
+              <div style={{fontSize:'10px',fontWeight:'600',letterSpacing:'.1em',textTransform:'uppercase',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',marginBottom:'6px'}}>⏰ Meal Times</div>
+              <div style={{display:'flex',gap:'12px',flexWrap:'wrap'}}>
+                {g.breakfast_time && <span style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>🌅 {g.breakfast_time}</span>}
+                {g.lunch_time && <span style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>☀️ {g.lunch_time}</span>}
+                {g.dinner_time && <span style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>🌙 {g.dinner_time}</span>}
+              </div>
+            </div>
+          )}
+          {g.breakfast && (
+            <div style={{marginTop:'10px'}}>
+              <div style={{fontSize:'10px',fontWeight:'600',letterSpacing:'.1em',textTransform:'uppercase',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',marginBottom:'4px'}}>🍳 Breakfast</div>
+              <div style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>{g.breakfast}</div>
+            </div>
+          )}
+          {g.juices && (
+            <div style={{marginTop:'10px'}}>
+              <div style={{fontSize:'10px',fontWeight:'600',letterSpacing:'.1em',textTransform:'uppercase',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',marginBottom:'4px'}}>🥤 Juices</div>
+              <div style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>{g.juices}</div>
+            </div>
+          )}
+          {g.softs && (
+            <div style={{marginTop:'10px'}}>
+              <div style={{fontSize:'10px',fontWeight:'600',letterSpacing:'.1em',textTransform:'uppercase',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',marginBottom:'4px'}}>🧃 Soft Drinks</div>
+              <div style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>{g.softs}</div>
+            </div>
+          )}
+          {g.spirits && (
+            <div style={{marginTop:'10px'}}>
+              <div style={{fontSize:'10px',fontWeight:'600',letterSpacing:'.1em',textTransform:'uppercase',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',marginBottom:'4px'}}>🥃 Spirits</div>
+              <div style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>{g.spirits}</div>
+            </div>
+          )}
+          {g.cocktails && (
+            <div style={{marginTop:'10px'}}>
+              <div style={{fontSize:'10px',fontWeight:'600',letterSpacing:'.1em',textTransform:'uppercase',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',marginBottom:'4px'}}>🍹 Cocktails</div>
+              <div style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>{g.cocktails}</div>
+            </div>
+          )}
+          {g.favorites && (
+            <div style={{marginTop:'10px'}}>
+              <div style={{fontSize:'10px',fontWeight:'600',letterSpacing:'.1em',textTransform:'uppercase',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',marginBottom:'4px'}}>⭐ Favourites</div>
+              <div style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>{g.favorites}</div>
+            </div>
+          )}
+          {g.notes && (
+            <div style={{marginTop:'10px'}}>
+              <div style={{fontSize:'10px',fontWeight:'600',letterSpacing:'.1em',textTransform:'uppercase',color: isSelected ? 'rgba(255,255,255,0.6)' : 'var(--muted)',marginBottom:'4px'}}>📝 Notes</div>
+              <div style={{fontSize:'12px',color: isSelected ? 'rgba(255,255,255,0.9)' : 'var(--ink)'}}>{g.notes}</div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function CrewPage() {
   const { token } = useParams()
   const [unlocked, setUnlocked] = useState(false)
@@ -69,7 +151,7 @@ export default function CrewPage() {
 
   const buildSystem = () => {
     if (selectedGuests.length === 0) return "You are the private chef assistant aboard an ultra-luxury superyacht. No guest selected. Respond in English, be concise and professional."
-    
+
     const profiles = selectedGuests.map(p => [
       "GUEST: " + p.name,
       p.allergies?.length ? "⚠️ ALLERGIES (life-threatening): " + p.allergies.join(", ") : "",
@@ -109,13 +191,19 @@ export default function CrewPage() {
       "- GOOD EXAMPLE: Base = Truffle risotto. Charlotte → same risotto, no parmesan. Chloé → same risotto, extra mushrooms instead of chicken.",
       "- BAD EXAMPLE: 'For Chloé, a green salad instead.' — This is WRONG. The dish must remain a risotto for everyone.",
       "- If a guest is vegetarian, find a dish that is naturally vegetarian or easily made so — do not give them a separate dish.",
+      "- If a dish truly cannot work for one guest even with minor adaptations, say so clearly and suggest a different base dish for everyone.",
       "- ONLY mention an adaptation for a guest if there is a REAL conflict with their restrictions. If a guest has no issue with an ingredient, do not modify their dish.",
-"- Never invent adaptations. If risotto works perfectly for everyone, write '✓ Arthur — no changes ✓ Charlotte — no changes ✓ Chloé — no chicken, naturally vegetarian'.",
-"- If a dish truly cannot work for one guest even with minor adaptations, say so clearly and suggest a different base dish for everyone.",
-   "- ONLY mention an adaptation for a guest if there is a REAL conflict with their restrictions. If a guest has no issue with an ingredient, do not modify their dish.",
-"- Never invent adaptations. If risotto works perfectly for everyone, write '✓ Arthur — no changes ✓ Charlotte — no changes ✓ Chloé — no chicken, naturally vegetarian'.",
-"- Adaptations must be justified by an actual allergy or dislike listed above. No adaptation without a real reason.",
- "",
+      "- Never invent adaptations. If risotto works perfectly for everyone, write '✓ Arthur — no changes ✓ Charlotte — no changes ✓ Chloé — no chicken, naturally vegetarian'.",
+      "- Adaptations must be justified by an actual allergy or dislike listed above. No adaptation without a real reason.",
+      "",
+      "CULINARY STANDARDS:",
+      "- All dishes must be refined, elegant and worthy of a Michelin-starred restaurant.",
+      "- Superyacht guests expect the highest gastronomic standards. No simple or basic dishes.",
+      "- Prioritise premium ingredients: truffle, wagyu, langoustine, foie gras, caviar, premium fish.",
+      "- Presentations must be restaurant-quality. Always think plating and visual elegance.",
+      "- Inspiration from French, Japanese, Mediterranean haute cuisine.",
+      "- When generating a week menu, ensure variety and progression — no repeated dishes, balanced between land and sea.",
+      "",
       "SHOPPING LIST RULES:",
       "- When asked for a shopping list, generate a complete, organised list by category.",
       "- Include exact quantities based on number of guests and days.",
@@ -128,13 +216,6 @@ export default function CrewPage() {
       "3. One line per guest: '✓ Arthur — no changes' or '✓ Charlotte — dressing on the side'",
       "4. One sentence of explanation maximum",
       "",
-      "CULINARY STANDARDS:",
-"- All dishes must be refined, elegant and worthy of a Michelin-starred restaurant.",
-"- Superyacht guests expect the highest gastronomic standards. No simple or basic dishes.",
-"- Prioritise premium ingredients: truffle, wagyu, langoustine, foie gras, caviar, premium fish.",
-"- Presentations must be restaurant-quality. Always think plating and visual elegance.",
-"- Inspiration from French, Japanese, Mediterranean haute cuisine.",
-"- When generating a week menu, ensure variety and progression — no repeated dishes, balanced between land and sea.",
       "Keep responses SHORT and easy to read. The chef reads this in 5 seconds between two pans.",
     ].join("\n")
   }
@@ -249,23 +330,14 @@ export default function CrewPage() {
                   <p>No guest profiles yet for this charter.</p>
                 </div>
               ) : (
-                allGuests.map(g => {
-                  const isSelected = selectedGuests.find(s => s.id === g.id)
-                  return (
-                    <div key={g.id} onClick={() => toggleSelectGuest(g)} style={{padding:'10px 12px',marginBottom:'6px',cursor:'pointer',borderRadius:'2px',border:`1px solid ${isSelected ? 'var(--accent)' : 'var(--border)'}`,background: isSelected ? 'var(--accent)' : '#fff',color: isSelected ? '#fff' : 'var(--ink)'}}>
-                      <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                        <div style={{width:'16px',height:'16px',borderRadius:'3px',border:`1px solid ${isSelected ? '#fff' : 'var(--border)'}`,background: isSelected ? '#fff' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                          {isSelected && <span style={{color:'var(--accent)',fontSize:'12px',fontWeight:'bold'}}>✓</span>}
-                        </div>
-                        <div>
-                          <div style={{fontFamily:'Cormorant Garamond, serif',fontSize:'16px'}}>{g.name}</div>
-                          {g.allergies?.length > 0 && <div style={{fontSize:'11px',color: isSelected ? 'rgba(255,255,255,0.8)' : 'var(--danger)',marginTop:'4px'}}>⚠️ {g.allergies.join(', ')}</div>}
-                          {g.dislikes?.length > 0 && <div style={{fontSize:'11px',color: isSelected ? 'rgba(255,255,255,0.7)' : 'var(--muted)',marginTop:'2px'}}>🚫 {g.dislikes.join(', ')}</div>}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })
+                allGuests.map(g => (
+                  <GuestCard
+                    key={g.id}
+                    g={g}
+                    isSelected={!!selectedGuests.find(s => s.id === g.id)}
+                    onToggle={() => toggleSelectGuest(g)}
+                  />
+                ))
               )}
             </div>
 
