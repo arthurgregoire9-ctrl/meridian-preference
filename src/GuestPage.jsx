@@ -3,6 +3,26 @@ import { useParams } from "react-router-dom"
 import { createClient } from "@supabase/supabase-js"
 const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtcWdieGpuZmtqbmtwZmlyZmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDA0NzYsImV4cCI6MjA5MTY3NjQ3Nn0.y16FCg_HXkd7Ua_CU7K2o5Kd-QuEXxbz18hZsj4GaHI")
 
+const DIET_MAP = {
+  "Vegan":"Vegan","Végétarien":"Vegetarian","Végétarienne":"Vegetarian","Vegano":"Vegan","Vegana":"Vegan","Vegane":"Vegan",
+  "Vegetariano":"Vegetarian","Halal":"Halal","Casher":"Kosher","Kosher":"Kosher","Keto":"Keto",
+  "Sans gluten":"Gluten-free","Senza glutine":"Gluten-free","Без глютена":"Gluten-free","Gluten-free":"Gluten-free",
+  "Sans lactose":"Lactose-free","Senza lattosio":"Lactose-free","Без лактозы":"Lactose-free","Lactose-free":"Lactose-free",
+  "Paleo":"Paleo","Sans porc":"No Pork","Senza maiale":"No Pork","Без свинины":"No Pork","No Pork":"No Pork",
+  "Vegetarian":"Vegetarian","Веган":"Vegan","Вегетарианец":"Vegetarian","Халяль":"Halal","Кошер":"Kosher","Кето":"Keto","Палео":"Paleo"
+}
+
+const CUISINE_MAP = {
+  "Japonaise":"Japanese","Italienne":"Italian","Française":"French","Méditerranéenne":"Mediterranean",
+  "Asiatique":"Asian","Américaine":"American","Mexicaine":"Mexican","Indienne":"Indian","Grecque":"Greek","Levantine":"Levantine",
+  "Giapponese":"Japanese","Italiana":"Italian","Francese":"French","Mediterranea":"Mediterranean",
+  "Asiatica":"Asian","Americana":"American","Messicana":"Mexican","Indiana":"Indian","Greca":"Greek",
+  "Японская":"Japanese","Итальянская":"Italian","Французская":"French","Средиземноморская":"Mediterranean",
+  "Азиатская":"Asian","Американская":"American","Мексиканская":"Mexican","Индийская":"Indian","Греческая":"Greek","Левантийская":"Levantine",
+  "Japanese":"Japanese","Italian":"Italian","French":"French","Mediterranean":"Mediterranean",
+  "Asian":"Asian","American":"American","Mexican":"Mexican","Indian":"Indian","Greek":"Greek"
+}
+
 const TRANSLATIONS = {
   en: {
     flag: '🇬🇧',
@@ -61,7 +81,7 @@ const TRANSLATIONS = {
     breakfast: 'Préférences petit-déjeuner', breakfastPlaceholder: 'ex. Oeufs Benedict, fruits frais, granola',
     juices: 'Jus préférés', juicesPlaceholder: 'ex. Orange pressée, jus vert, pastèque',
     notes: 'Notes supplémentaires', notesPlaceholder: 'ex. Repas légers le midi, pas de viande rouge le soir',
-    next: 'Continuer', back: 'Retour', submit: 'Envoyer à l équipage',
+    next: 'Continuer', back: 'Retour', submit: 'Envoyer à l equipage',
     thankYou: 'Merci.',
     thankYouMsg: 'Vos préférences ont été sauvegardées et transmises à l équipage.',
     addGuest: '+ Ajouter un invité', notFound: 'Lien introuvable',
@@ -342,9 +362,7 @@ export default function GuestPage() {
     fetchCharter()
   }, [token])
 
-  useEffect(() => {
-    setStep(0)
-  }, [activeGuest])
+  useEffect(() => { setStep(0) }, [activeGuest])
 
   const addGuest = () => {
     setGuests([...guests, emptyGuest()])
@@ -371,8 +389,8 @@ export default function GuestPage() {
         email: guest.email?.trim().toLowerCase() || null,
         allergies: guest.allergies,
         dislikes: guest.dislikes,
-        diets: guest.diets,
-        cuisines: guest.cuisines,
+        diets: guest.diets.map(d => DIET_MAP[d] || d),
+        cuisines: guest.cuisines.map(c => CUISINE_MAP[c] || c),
         favorites: guest.favorites,
         spirits: guest.spirits,
         cocktails: guest.cocktails,
