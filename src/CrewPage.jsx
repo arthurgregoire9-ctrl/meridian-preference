@@ -50,14 +50,14 @@ function exportGuestsPDF(guests, charterName) {
     y += 2
 
     if (g.allergies?.length) {
-      addText(`⚠ ALLERGIES: ${g.allergies.join(', ')}`, 15, 10, 'bold', [180, 40, 40])
-    }
-    if (g.dislikes?.length) {
-      addText(`✗ Dislikes: ${g.dislikes.join(', ')}`, 15, 10, 'normal', [120, 80, 40])
-    }
-    if (g.diets?.length) {
-      addText(`Diet: ${g.diets.join(', ')}`, 15, 10, 'normal', [40, 100, 60])
-    }
+  addText(`ALLERGIES: ${g.allergies.join(', ')}`, 15, 10, 'bold', [180, 40, 40])
+}
+if (g.dislikes?.length) {
+  addText(`DISLIKES: ${g.dislikes.join(', ')}`, 15, 10, 'normal', [120, 80, 40])
+}
+if (g.diets?.length) {
+  addText(`DIET: ${g.diets.join(', ')}`, 15, 10, 'normal', [40, 100, 60])
+}
     if (g.cuisines?.length) {
       addText(`Preferred cuisines: ${g.cuisines.join(', ')}`, 15, 10)
     }
@@ -70,9 +70,9 @@ function exportGuestsPDF(guests, charterName) {
     if (g.breakfast_time || g.lunch_time || g.dinner_time) {
       addText('MEAL TIMES', 15, 9, 'bold', [100, 100, 100])
       const times = []
-      if (g.breakfast_time) times.push(`Breakfast: ${g.breakfast_time}`)
-      if (g.lunch_time) times.push(`Lunch: ${g.lunch_time}`)
-      if (g.dinner_time) times.push(`Dinner: ${g.dinner_time}`)
+     if (g.breakfast_time) times.push(`Breakfast: ${g.breakfast_time}`)
+if (g.lunch_time) times.push(`Lunch: ${g.lunch_time}`)
+if (g.dinner_time) times.push(`Dinner: ${g.dinner_time}`)
       addText(times.join('   |   '), 15, 10)
     }
     if (g.breakfast) addText(`Breakfast prefs: ${g.breakfast}`, 15, 10)
