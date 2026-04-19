@@ -3,162 +3,14 @@ import { useParams } from "react-router-dom"
 import { createClient } from "@supabase/supabase-js"
 const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtcWdieGpuZmtqbmtwZmlyZmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDA0NzYsImV4cCI6MjA5MTY3NjQ3Nn0.y16FCg_HXkd7Ua_CU7K2o5Kd-QuEXxbz18hZsj4GaHI")
 
-const DIET_MAP = {
-  "Vegan":"Vegan","Végétarien":"Vegetarian","Végétarienne":"Vegetarian","Vegano":"Vegan","Vegana":"Vegan","Vegane":"Vegan",
-  "Vegetariano":"Vegetarian","Halal":"Halal","Casher":"Kosher","Kosher":"Kosher","Keto":"Keto",
-  "Sans gluten":"Gluten-free","Senza glutine":"Gluten-free","Без глютена":"Gluten-free","Gluten-free":"Gluten-free",
-  "Sans lactose":"Lactose-free","Senza lattosio":"Lactose-free","Без лактозы":"Lactose-free","Lactose-free":"Lactose-free",
-  "Paleo":"Paleo","Sans porc":"No Pork","Senza maiale":"No Pork","Без свинины":"No Pork","No Pork":"No Pork",
-  "Vegetarian":"Vegetarian","Веган":"Vegan","Вегетарианец":"Vegetarian","Халяль":"Halal","Кошер":"Kosher","Кето":"Keto","Палео":"Paleo"
-}
+const emptyGuest = () => ({
+  name:'', email:'', allergies:[], dislikes:[], diets:[], cuisines:[],
+  favorites:'', spirits:'', cocktails:'', softs:'', breakfast:'', juices:'', notes:'',
+  breakfast_time:'08:00', lunch_time:'13:00', dinner_time:'20:00'
+})
 
-const CUISINE_MAP = {
-  "Japonaise":"Japanese","Italienne":"Italian","Française":"French","Méditerranéenne":"Mediterranean",
-  "Asiatique":"Asian","Américaine":"American","Mexicaine":"Mexican","Indienne":"Indian","Grecque":"Greek","Levantine":"Levantine",
-  "Giapponese":"Japanese","Italiana":"Italian","Francese":"French","Mediterranea":"Mediterranean",
-  "Asiatica":"Asian","Americana":"American","Messicana":"Mexican","Indiana":"Indian","Greca":"Greek",
-  "Японская":"Japanese","Итальянская":"Italian","Французская":"French","Средиземноморская":"Mediterranean",
-  "Азиатская":"Asian","Американская":"American","Мексиканская":"Mexican","Индийская":"Indian","Греческая":"Greek","Левантийская":"Levantine",
-  "Japanese":"Japanese","Italian":"Italian","French":"French","Mediterranean":"Mediterranean",
-  "Asian":"Asian","American":"American","Mexican":"Mexican","Indian":"Indian","Greek":"Greek"
-}
-
-const TRANSLATIONS = {
-  en: {
-    flag: '🇬🇧',
-    title: 'Your', titleItalic: 'culinary', titleEnd: 'preferences',
-    subtitle: 'This information allows our private chef to personalise every dining experience exclusively for you.',
-    steps: ['Profile', 'Restrictions', 'Tastes', 'Dining'],
-    returning: 'Returning guest?',
-    emailPlaceholder: 'Enter your email to retrieve your profile',
-    profileFound: '✓ Profile found — your preferences have been loaded.',
-    profileNotFound: 'No profile found. Please fill in your preferences below.',
-    firstName: 'First name', firstNamePlaceholder: 'e.g. Alexandra',
-    email: 'Email', emailSub: 'Used to save and retrieve your profile',
-    emailInputPlaceholder: 'e.g. alexandra@email.com',
-    allergies: 'Allergies & Intolerances', allergiesPlaceholder: 'e.g. Nuts, Shellfish, Lactose',
-    dislikes: 'Disliked Ingredients', dislikesPlaceholder: 'e.g. Coriander, Liver, Pineapple',
-    dietary: 'Dietary Requirements', cuisines: 'Preferred Cuisines',
-    favorites: 'Favourite Dishes & Flavours', favoritesPlaceholder: 'e.g. Fresh sashimi, hand-made pasta, black truffle',
-    spirits: 'Favourite Spirits', spiritsPlaceholder: 'e.g. Macallan 18, Grey Goose, Don Julio 1942',
-    cocktails: 'Favourite Cocktails', cocktailsPlaceholder: 'e.g. Negroni, Mojito, Aperol Spritz',
-    softs: 'Soft Drinks', softsPlaceholder: 'e.g. San Pellegrino, Fever-Tree Ginger Beer',
-    mealTimes: 'Preferred Meal Times',
-    breakfastTime: 'Breakfast', lunchTime: 'Lunch', dinnerTime: 'Dinner',
-    breakfast: 'Breakfast Preferences', breakfastPlaceholder: 'e.g. Eggs Benedict, fresh fruit, granola',
-    juices: 'Favourite Juices', juicesPlaceholder: 'e.g. Fresh orange, green juice, watermelon',
-    notes: 'Additional Notes', notesPlaceholder: 'e.g. Lighter meals at lunch, no red meat in the evening',
-    next: 'Continue', back: 'Back', submit: 'Submit to the crew',
-    thankYou: 'Thank you.',
-    thankYouMsg: 'Your preferences have been saved and transmitted to the crew. Our private chef will ensure every meal is tailored to your taste throughout your time on board.',
-    addGuest: '+ Add guest', notFound: 'Link not found',
-    notFoundMsg: 'Please contact your charter agency for a valid link.',
-    loading: 'Loading...',
-    diets: ["Vegan","Vegetarian","Halal","Kosher","Keto","Gluten-free","Lactose-free","Paleo","No Pork"],
-    cuisineList: ["Japanese","Italian","French","Mediterranean","Asian","American","Mexican","Indian","Greek","Levantine"],
-  },
-  fr: {
-    flag: '🇫🇷',
-    title: 'Vos', titleItalic: 'préférences', titleEnd: 'culinaires',
-    subtitle: 'Ces informations permettent à notre chef privé de personnaliser chaque repas exclusivement pour vous.',
-    steps: ['Profil', 'Restrictions', 'Goûts', 'Repas'],
-    returning: 'Déjà client ?',
-    emailPlaceholder: 'Entrez votre email pour retrouver votre profil',
-    profileFound: '✓ Profil trouvé — vos préférences ont été chargées.',
-    profileNotFound: 'Aucun profil trouvé. Veuillez remplir vos préférences ci-dessous.',
-    firstName: 'Prénom', firstNamePlaceholder: 'ex. Alexandra',
-    email: 'Email', emailSub: 'Utilisé pour sauvegarder et retrouver votre profil',
-    emailInputPlaceholder: 'ex. alexandra@email.com',
-    allergies: 'Allergies & intolérances', allergiesPlaceholder: 'ex. Noix, Crustacés, Lactose',
-    dislikes: 'Aliments détestés', dislikesPlaceholder: 'ex. Coriandre, Foie, Ananas',
-    dietary: 'Régimes alimentaires', cuisines: 'Cuisines préférées',
-    favorites: 'Plats & saveurs favoris', favoritesPlaceholder: 'ex. Sushis frais, pâtes fraîches, truffe noire',
-    spirits: 'Alcools forts préférés', spiritsPlaceholder: 'ex. Macallan 18, Grey Goose, Don Julio 1942',
-    cocktails: 'Cocktails préférés', cocktailsPlaceholder: 'ex. Negroni, Mojito, Aperol Spritz',
-    softs: 'Boissons sans alcool', softsPlaceholder: 'ex. San Pellegrino, Fever-Tree Ginger Beer',
-    mealTimes: 'Horaires des repas',
-    breakfastTime: 'Petit-déjeuner', lunchTime: 'Déjeuner', dinnerTime: 'Dîner',
-    breakfast: 'Préférences petit-déjeuner', breakfastPlaceholder: 'ex. Oeufs Benedict, fruits frais, granola',
-    juices: 'Jus préférés', juicesPlaceholder: 'ex. Orange pressée, jus vert, pastèque',
-    notes: 'Notes supplémentaires', notesPlaceholder: 'ex. Repas légers le midi, pas de viande rouge le soir',
-    next: 'Continuer', back: 'Retour', submit: 'Envoyer à l equipage',
-    thankYou: 'Merci.',
-    thankYouMsg: 'Vos préférences ont été sauvegardées et transmises à l équipage.',
-    addGuest: '+ Ajouter un invité', notFound: 'Lien introuvable',
-    notFoundMsg: 'Veuillez contacter votre agence de charter pour obtenir un lien valide.',
-    loading: 'Chargement...',
-    diets: ["Vegan","Végétarien","Halal","Casher","Keto","Sans gluten","Sans lactose","Paleo","Sans porc"],
-    cuisineList: ["Japonaise","Italienne","Française","Méditerranéenne","Asiatique","Américaine","Mexicaine","Indienne","Grecque","Levantine"],
-  },
-  it: {
-    flag: '🇮🇹',
-    title: 'Le tue', titleItalic: 'preferenze', titleEnd: 'culinarie',
-    subtitle: 'Queste informazioni permettono al nostro chef privato di personalizzare ogni esperienza culinaria esclusivamente per te.',
-    steps: ['Profilo', 'Restrizioni', 'Gusti', 'Pasti'],
-    returning: 'Già cliente?',
-    emailPlaceholder: 'Inserisci la tua email per recuperare il tuo profilo',
-    profileFound: '✓ Profilo trovato — le tue preferenze sono state caricate.',
-    profileNotFound: 'Nessun profilo trovato. Compila le tue preferenze qui sotto.',
-    firstName: 'Nome', firstNamePlaceholder: 'es. Alexandra',
-    email: 'Email', emailSub: 'Usata per salvare e recuperare il tuo profilo',
-    emailInputPlaceholder: 'es. alexandra@email.com',
-    allergies: 'Allergie & intolleranze', allergiesPlaceholder: 'es. Noci, Crostacei, Lattosio',
-    dislikes: 'Ingredienti non graditi', dislikesPlaceholder: 'es. Coriandolo, Fegato, Ananas',
-    dietary: 'Requisiti dietetici', cuisines: 'Cucine preferite',
-    favorites: 'Piatti & sapori preferiti', favoritesPlaceholder: 'es. Sashimi fresco, pasta fatta in casa, tartufo nero',
-    spirits: 'Superalcolici preferiti', spiritsPlaceholder: 'es. Macallan 18, Grey Goose, Don Julio 1942',
-    cocktails: 'Cocktail preferiti', cocktailsPlaceholder: 'es. Negroni, Mojito, Aperol Spritz',
-    softs: 'Bevande analcoliche', softsPlaceholder: 'es. San Pellegrino, Fever-Tree Ginger Beer',
-    mealTimes: 'Orari dei pasti preferiti',
-    breakfastTime: 'Colazione', lunchTime: 'Pranzo', dinnerTime: 'Cena',
-    breakfast: 'Preferenze colazione', breakfastPlaceholder: 'es. Uova Benedict, frutta fresca, granola',
-    juices: 'Succhi preferiti', juicesPlaceholder: 'es. Arancia fresca, succo verde, anguria',
-    notes: 'Note aggiuntive', notesPlaceholder: 'es. Pasti leggeri a pranzo, niente carne rossa la sera',
-    next: 'Continua', back: 'Indietro', submit: 'Invia all equipaggio',
-    thankYou: 'Grazie.',
-    thankYouMsg: 'Le tue preferenze sono state salvate e trasmesse all equipaggio.',
-    addGuest: '+ Aggiungi ospite', notFound: 'Link non trovato',
-    notFoundMsg: 'Contatta la tua agenzia charter per ottenere un link valido.',
-    loading: 'Caricamento...',
-    diets: ["Vegano","Vegetariano","Halal","Kosher","Keto","Senza glutine","Senza lattosio","Paleo","Senza maiale"],
-    cuisineList: ["Giapponese","Italiana","Francese","Mediterranea","Asiatica","Americana","Messicana","Indiana","Greca","Levantina"],
-  },
-  ru: {
-    flag: '🇷🇺',
-    title: 'Ваши', titleItalic: 'кулинарные', titleEnd: 'предпочтения',
-    subtitle: 'Эта информация позволяет нашему личному шеф-повару персонализировать каждый приём пищи исключительно для вас.',
-    steps: ['Профиль', 'Ограничения', 'Вкусы', 'Питание'],
-    returning: 'Уже были у нас?',
-    emailPlaceholder: 'Введите email для загрузки вашего профиля',
-    profileFound: '✓ Профиль найден — ваши предпочтения загружены.',
-    profileNotFound: 'Профиль не найден. Заполните предпочтения ниже.',
-    firstName: 'Имя', firstNamePlaceholder: 'напр. Александра',
-    email: 'Email', emailSub: 'Для сохранения и получения вашего профиля',
-    emailInputPlaceholder: 'напр. alexandra@email.com',
-    allergies: 'Аллергии & непереносимости', allergiesPlaceholder: 'напр. Орехи, Морепродукты, Лактоза',
-    dislikes: 'Нежелательные ингредиенты', dislikesPlaceholder: 'напр. Кинза, Печень, Ананас',
-    dietary: 'Диетические требования', cuisines: 'Предпочитаемые кухни',
-    favorites: 'Любимые блюда & вкусы', favoritesPlaceholder: 'напр. Свежее сашими, домашняя паста, чёрный трюфель',
-    spirits: 'Крепкие напитки', spiritsPlaceholder: 'напр. Macallan 18, Grey Goose, Don Julio 1942',
-    cocktails: 'Любимые коктейли', cocktailsPlaceholder: 'напр. Негрони, Мохито, Апероль Шприц',
-    softs: 'Безалкогольные напитки', softsPlaceholder: 'напр. San Pellegrino, Fever-Tree Ginger Beer',
-    mealTimes: 'Предпочтительное время приёма пищи',
-    breakfastTime: 'Завтрак', lunchTime: 'Обед', dinnerTime: 'Ужин',
-    breakfast: 'Предпочтения по завтраку', breakfastPlaceholder: 'напр. Яйца Бенедикт, свежие фрукты, гранола',
-    juices: 'Любимые соки', juicesPlaceholder: 'напр. Свежий апельсин, зелёный сок, арбуз',
-    notes: 'Дополнительные заметки', notesPlaceholder: 'напр. Лёгкие блюда на обед, без красного мяса вечером',
-    next: 'Продолжить', back: 'Назад', submit: 'Отправить экипажу',
-    thankYou: 'Спасибо.',
-    thankYouMsg: 'Ваши предпочтения сохранены и переданы экипажу.',
-    addGuest: '+ Добавить гостя', notFound: 'Ссылка не найдена',
-    notFoundMsg: 'Свяжитесь с вашим агентством для получения действительной ссылки.',
-    loading: 'Загрузка...',
-    diets: ["Веган","Вегетарианец","Халяль","Кошер","Кето","Без глютена","Без лактозы","Палео","Без свинины"],
-    cuisineList: ["Японская","Итальянская","Французская","Средиземноморская","Азиатская","Американская","Мексиканская","Индийская","Греческая","Левантийская"],
-  }
-}
-
-const emptyGuest = () => ({ name:'', email:'', allergies:[], dislikes:[], diets:[], cuisines:[], favorites:'', spirits:'', cocktails:'', softs:'', breakfast:'', juices:'', notes:'', breakfast_time:'08:00', lunch_time:'13:00', dinner_time:'20:00' })
+const DIETS = ["Vegan","Vegetarian","Halal","Kosher","Keto","Gluten-free","Lactose-free","Paleo","No Pork"]
+const CUISINES = ["Japanese","Italian","French","Mediterranean","Asian","American","Mexican","Indian","Greek","Levantine"]
 
 function TimeSelector({ label, value, onChange }) {
   const hours = Array.from({length: 24}, (_, i) => i)
@@ -186,7 +38,7 @@ function TimeSelector({ label, value, onChange }) {
 function StepIndicator({ current, total, labels }) {
   return (
     <div style={{marginBottom:'48px'}}>
-      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'0',marginBottom:'12px'}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'12px'}}>
         {Array.from({length: total}).map((_, i) => (
           <div key={i} style={{display:'flex',alignItems:'center'}}>
             <div style={{width:'28px',height:'28px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',fontWeight:'600',background: i < current ? 'var(--accent)' : i === current ? 'var(--ink)' : 'transparent',color: i <= current ? '#fff' : 'var(--muted)',border: i > current ? '1px solid var(--border)' : 'none',transition:'all .3s'}}>
@@ -224,117 +76,114 @@ function GuestForm({ guest, onChange, t, onSubmit, step, setStep }) {
 
   const lookupGuest = async () => {
     if (!emailLookup.trim()) return
-    setLookupStatus('searching')
     const { data } = await supabase.from('guests').select('*').eq('email', emailLookup.trim().toLowerCase()).single()
     if (data) { onChange({ ...data }); setLookupStatus('found') }
     else setLookupStatus('notfound')
   }
 
-  const toggleChip = (type, item) => {
-    if (type === 'diet') onChange({ ...guest, diets: guest.diets.includes(item) ? guest.diets.filter(d => d !== item) : [...guest.diets, item] })
-    else onChange({ ...guest, cuisines: guest.cuisines.includes(item) ? guest.cuisines.filter(c => c !== item) : [...guest.cuisines, item] })
-  }
+  const toggleDiet = (item) => onChange({ ...guest, diets: guest.diets.includes(item) ? guest.diets.filter(d => d !== item) : [...guest.diets, item] })
+  const toggleCuisine = (item) => onChange({ ...guest, cuisines: guest.cuisines.includes(item) ? guest.cuisines.filter(c => c !== item) : [...guest.cuisines, item] })
 
   const steps = [
     <div key="s1" style={{animation:'fadeSlide .4s ease'}}>
       <div className="section">
-        <div className="section-label">{t.returning}</div>
+        <div className="section-label">Returning guest?</div>
         <div className="tag-row">
-          <input placeholder={t.emailPlaceholder} value={emailLookup} onChange={e => setEmailLookup(e.target.value)} onKeyDown={e => e.key==='Enter' && lookupGuest()}/>
+          <input placeholder="Enter your email to retrieve your profile" value={emailLookup} onChange={e => setEmailLookup(e.target.value)} onKeyDown={e => e.key==='Enter' && lookupGuest()}/>
           <button className="btn-add" onClick={lookupGuest}>→</button>
         </div>
-        {lookupStatus === 'found' && <p style={{fontSize:'13px',color:'var(--success)',marginTop:'8px'}}>{t.profileFound}</p>}
-        {lookupStatus === 'notfound' && <p style={{fontSize:'13px',color:'var(--muted)',marginTop:'8px'}}>{t.profileNotFound}</p>}
+        {lookupStatus === 'found' && <p style={{fontSize:'13px',color:'var(--success)',marginTop:'8px'}}>✓ Profile found — your preferences have been loaded.</p>}
+        {lookupStatus === 'notfound' && <p style={{fontSize:'13px',color:'var(--muted)',marginTop:'8px'}}>No profile found. Please fill in your preferences below.</p>}
       </div>
       <div className="section">
         <div className="field">
-          <label>{t.firstName}</label>
-          <input placeholder={t.firstNamePlaceholder} value={guest.name} onChange={e => onChange({ ...guest, name: e.target.value })}/>
+          <label>First name</label>
+          <input placeholder="e.g. Alexandra" value={guest.name} onChange={e => onChange({ ...guest, name: e.target.value })}/>
         </div>
         <div className="field">
-          <label>{t.email} <span style={{fontWeight:300,color:'var(--muted)',fontSize:'12px'}}>— {t.emailSub}</span></label>
-          <input type="email" placeholder={t.emailInputPlaceholder} value={guest.email} onChange={e => onChange({ ...guest, email: e.target.value })}/>
+          <label>Email <span style={{fontWeight:300,color:'var(--muted)',fontSize:'12px'}}>— Used to save and retrieve your profile</span></label>
+          <input type="email" placeholder="e.g. alexandra@email.com" value={guest.email} onChange={e => onChange({ ...guest, email: e.target.value })}/>
         </div>
       </div>
     </div>,
 
     <div key="s2" style={{animation:'fadeSlide .4s ease'}}>
       <div className="section">
-        <div className="section-label">{t.allergies}</div>
-        <TagInput placeholder={t.allergiesPlaceholder} tags={guest.allergies} onAdd={v => onChange({ ...guest, allergies: [...guest.allergies, v] })} onRemove={v => onChange({ ...guest, allergies: guest.allergies.filter(a => a !== v) })} className="danger"/>
+        <div className="section-label">Allergies & Intolerances</div>
+        <TagInput placeholder="e.g. Nuts, Shellfish, Lactose" tags={guest.allergies} onAdd={v => onChange({ ...guest, allergies: [...guest.allergies, v] })} onRemove={v => onChange({ ...guest, allergies: guest.allergies.filter(a => a !== v) })} className="danger"/>
       </div>
       <div className="section">
-        <div className="section-label">{t.dislikes}</div>
-        <TagInput placeholder={t.dislikesPlaceholder} tags={guest.dislikes} onAdd={v => onChange({ ...guest, dislikes: [...guest.dislikes, v] })} onRemove={v => onChange({ ...guest, dislikes: guest.dislikes.filter(d => d !== v) })} className="dislike"/>
+        <div className="section-label">Disliked Ingredients</div>
+        <TagInput placeholder="e.g. Coriander, Liver, Pineapple" tags={guest.dislikes} onAdd={v => onChange({ ...guest, dislikes: [...guest.dislikes, v] })} onRemove={v => onChange({ ...guest, dislikes: guest.dislikes.filter(d => d !== v) })} className="dislike"/>
       </div>
       <div className="section">
-        <div className="section-label">{t.dietary}</div>
-        <div className="chips">{t.diets.map(item => <span key={item} className={`chip ${guest.diets.includes(item)?'on':''}`} onClick={() => toggleChip('diet',item)}>{item}</span>)}</div>
+        <div className="section-label">Dietary Requirements</div>
+        <div className="chips">{DIETS.map(item => <span key={item} className={`chip ${guest.diets.includes(item)?'on':''}`} onClick={() => toggleDiet(item)}>{item}</span>)}</div>
       </div>
     </div>,
 
     <div key="s3" style={{animation:'fadeSlide .4s ease'}}>
       <div className="section">
-        <div className="section-label">{t.cuisines}</div>
-        <div className="chips">{t.cuisineList.map(item => <span key={item} className={`chip ${guest.cuisines.includes(item)?'on':''}`} onClick={() => toggleChip('cuisine',item)}>{item}</span>)}</div>
+        <div className="section-label">Preferred Cuisines</div>
+        <div className="chips">{CUISINES.map(item => <span key={item} className={`chip ${guest.cuisines.includes(item)?'on':''}`} onClick={() => toggleCuisine(item)}>{item}</span>)}</div>
       </div>
       <div className="section">
-        <div className="section-label">{t.favorites}</div>
-        <div className="field"><textarea placeholder={t.favoritesPlaceholder} value={guest.favorites||''} onChange={e => onChange({ ...guest, favorites: e.target.value })}/></div>
+        <div className="section-label">Favourite Dishes & Flavours</div>
+        <div className="field"><textarea placeholder="e.g. Fresh sashimi, hand-made pasta, black truffle" value={guest.favorites||''} onChange={e => onChange({ ...guest, favorites: e.target.value })}/></div>
       </div>
       <div className="section">
-        <div className="section-label">{t.spirits}</div>
-        <div className="field"><textarea placeholder={t.spiritsPlaceholder} value={guest.spirits||''} onChange={e => onChange({ ...guest, spirits: e.target.value })}/></div>
+        <div className="section-label">Favourite Spirits</div>
+        <div className="field"><textarea placeholder="e.g. Macallan 18, Grey Goose, Don Julio 1942" value={guest.spirits||''} onChange={e => onChange({ ...guest, spirits: e.target.value })}/></div>
       </div>
       <div className="section">
-        <div className="section-label">{t.cocktails}</div>
-        <div className="field"><textarea placeholder={t.cocktailsPlaceholder} value={guest.cocktails||''} onChange={e => onChange({ ...guest, cocktails: e.target.value })}/></div>
+        <div className="section-label">Favourite Cocktails</div>
+        <div className="field"><textarea placeholder="e.g. Negroni, Mojito, Aperol Spritz" value={guest.cocktails||''} onChange={e => onChange({ ...guest, cocktails: e.target.value })}/></div>
       </div>
       <div className="section">
-        <div className="section-label">{t.softs}</div>
-        <div className="field"><textarea placeholder={t.softsPlaceholder} value={guest.softs||''} onChange={e => onChange({ ...guest, softs: e.target.value })}/></div>
+        <div className="section-label">Soft Drinks</div>
+        <div className="field"><textarea placeholder="e.g. San Pellegrino, Fever-Tree Ginger Beer" value={guest.softs||''} onChange={e => onChange({ ...guest, softs: e.target.value })}/></div>
       </div>
     </div>,
 
     <div key="s4" style={{animation:'fadeSlide .4s ease'}}>
       <div className="section">
-        <div className="section-label">{t.mealTimes}</div>
-        <TimeSelector label={t.breakfastTime} value={guest.breakfast_time||'08:00'} onChange={v => onChange({ ...guest, breakfast_time: v })}/>
-        <TimeSelector label={t.lunchTime} value={guest.lunch_time||'13:00'} onChange={v => onChange({ ...guest, lunch_time: v })}/>
-        <TimeSelector label={t.dinnerTime} value={guest.dinner_time||'20:00'} onChange={v => onChange({ ...guest, dinner_time: v })}/>
+        <div className="section-label">Preferred Meal Times</div>
+        <TimeSelector label="Breakfast" value={guest.breakfast_time||'08:00'} onChange={v => onChange({ ...guest, breakfast_time: v })}/>
+        <TimeSelector label="Lunch" value={guest.lunch_time||'13:00'} onChange={v => onChange({ ...guest, lunch_time: v })}/>
+        <TimeSelector label="Dinner" value={guest.dinner_time||'20:00'} onChange={v => onChange({ ...guest, dinner_time: v })}/>
       </div>
       <div className="section">
-        <div className="section-label">{t.breakfast}</div>
-        <div className="field"><textarea placeholder={t.breakfastPlaceholder} value={guest.breakfast||''} onChange={e => onChange({ ...guest, breakfast: e.target.value })}/></div>
+        <div className="section-label">Breakfast Preferences</div>
+        <div className="field"><textarea placeholder="e.g. Eggs Benedict, fresh fruit, granola" value={guest.breakfast||''} onChange={e => onChange({ ...guest, breakfast: e.target.value })}/></div>
       </div>
       <div className="section">
-        <div className="section-label">{t.juices}</div>
-        <div className="field"><textarea placeholder={t.juicesPlaceholder} value={guest.juices||''} onChange={e => onChange({ ...guest, juices: e.target.value })}/></div>
+        <div className="section-label">Favourite Juices</div>
+        <div className="field"><textarea placeholder="e.g. Fresh orange, green juice, watermelon" value={guest.juices||''} onChange={e => onChange({ ...guest, juices: e.target.value })}/></div>
       </div>
       <div className="section">
-        <div className="section-label">{t.notes}</div>
-        <div className="field"><textarea placeholder={t.notesPlaceholder} value={guest.notes||''} onChange={e => onChange({ ...guest, notes: e.target.value })}/></div>
+        <div className="section-label">Additional Notes</div>
+        <div className="field"><textarea placeholder="e.g. Lighter meals at lunch, no red meat in the evening" value={guest.notes||''} onChange={e => onChange({ ...guest, notes: e.target.value })}/></div>
       </div>
     </div>
   ]
 
   return (
     <div>
-      <StepIndicator current={step} total={4} labels={t.steps}/>
+      <StepIndicator current={step} total={4} labels={['Profile', 'Restrictions', 'Tastes', 'Dining']}/>
       {steps[step]}
       <div style={{display:'flex',gap:'12px',marginTop:'32px'}}>
         {step > 0 && (
           <button onClick={() => setStep(step - 1)} style={{flex:1,padding:'14px',background:'transparent',color:'var(--ink)',border:'1px solid var(--border)',cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontSize:'12px',fontWeight:'500',letterSpacing:'.1em',textTransform:'uppercase',borderRadius:'1px',transition:'all .2s'}}>
-            {t.back}
+            Back
           </button>
         )}
         {step < 3 ? (
           <button onClick={() => setStep(step + 1)} className="btn-primary" style={{flex:1,margin:0}}>
-            {t.next} →
+            Continue →
           </button>
         ) : (
           <button onClick={onSubmit} className="btn-primary" style={{flex:1,margin:0}}>
-            {t.submit}
+            Submit to the crew
           </button>
         )}
       </div>
@@ -344,14 +193,12 @@ function GuestForm({ guest, onChange, t, onSubmit, step, setStep }) {
 
 export default function GuestPage() {
   const { token } = useParams()
-  const [lang, setLang] = useState('en')
   const [charter, setCharter] = useState(null)
   const [notFound, setNotFound] = useState(false)
   const [guests, setGuests] = useState([emptyGuest()])
   const [activeGuest, setActiveGuest] = useState(0)
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
-  const t = TRANSLATIONS[lang]
 
   useEffect(() => {
     const fetchCharter = async () => {
@@ -364,22 +211,9 @@ export default function GuestPage() {
 
   useEffect(() => { setStep(0) }, [activeGuest])
 
-  const addGuest = () => {
-    setGuests([...guests, emptyGuest()])
-    setActiveGuest(guests.length)
-  }
-
-  const removeGuest = (index) => {
-    const updated = guests.filter((_, i) => i !== index)
-    setGuests(updated)
-    setActiveGuest(Math.max(0, activeGuest - 1))
-  }
-
-  const updateGuest = (index, data) => {
-    const updated = [...guests]
-    updated[index] = data
-    setGuests(updated)
-  }
+  const addGuest = () => { setGuests([...guests, emptyGuest()]); setActiveGuest(guests.length) }
+  const removeGuest = (index) => { const u = guests.filter((_, i) => i !== index); setGuests(u); setActiveGuest(Math.max(0, activeGuest - 1)) }
+  const updateGuest = (index, data) => { const u = [...guests]; u[index] = data; setGuests(u) }
 
   const submitAll = async () => {
     for (const guest of guests) {
@@ -389,8 +223,8 @@ export default function GuestPage() {
         email: guest.email?.trim().toLowerCase() || null,
         allergies: guest.allergies,
         dislikes: guest.dislikes,
-        diets: guest.diets.map(d => DIET_MAP[d] || d),
-        cuisines: guest.cuisines.map(c => CUISINE_MAP[c] || c),
+        diets: guest.diets,
+        cuisines: guest.cuisines,
         favorites: guest.favorites,
         spirits: guest.spirits,
         cocktails: guest.cocktails,
@@ -413,8 +247,8 @@ export default function GuestPage() {
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
       <nav><div className="brand">The Galley</div></nav>
       <main style={{textAlign:'center',paddingTop:'80px'}}>
-        <h1 style={{fontFamily:'Cormorant Garamond,serif',fontWeight:300}}>{t.notFound}</h1>
-        <p style={{color:'var(--muted)',marginTop:'12px'}}>{t.notFoundMsg}</p>
+        <h1 style={{fontFamily:'Cormorant Garamond,serif',fontWeight:300}}>Link not found</h1>
+        <p style={{color:'var(--muted)',marginTop:'12px'}}>Please contact your charter agency for a valid link.</p>
       </main>
     </>
   )
@@ -424,7 +258,7 @@ export default function GuestPage() {
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
       <nav><div className="brand">The Galley</div></nav>
       <main style={{textAlign:'center',paddingTop:'80px'}}>
-        <p style={{color:'var(--muted)'}}>{t.loading}</p>
+        <p style={{color:'var(--muted)'}}>Loading...</p>
       </main>
     </>
   )
@@ -440,21 +274,14 @@ export default function GuestPage() {
       `}</style>
       <nav>
         <div className="brand">The Galley</div>
-        <div style={{display:'flex',gap:'6px'}}>
-          {Object.entries(TRANSLATIONS).map(([code, val]) => (
-            <button key={code} onClick={() => setLang(code)} style={{background: lang===code ? '#fff' : 'transparent',border:'none',borderRadius:'4px',padding:'4px 8px',cursor:'pointer',fontSize:'18px',opacity: lang===code ? 1 : 0.5}}>
-              {val.flag}
-            </button>
-          ))}
-        </div>
       </nav>
 
       <main style={{maxWidth:'560px'}}>
         {!submitted ? (
           <div>
             <div className="page-header">
-              <h1>{t.title} <em>{t.titleItalic}</em><br/>{t.titleEnd}</h1>
-              <p>{t.subtitle}</p>
+              <h1>Your <em>culinary</em><br/>preferences</h1>
+              <p>This information allows our private chef to personalise every dining experience exclusively for you.</p>
             </div>
 
             <div style={{display:'flex',gap:'8px',marginBottom:'40px',flexWrap:'wrap'}}>
@@ -465,7 +292,7 @@ export default function GuestPage() {
                 </div>
               ))}
               <button onClick={addGuest} style={{padding:'7px 16px',border:'1px dashed var(--border)',borderRadius:'20px',background:'transparent',cursor:'pointer',fontSize:'12px',color:'var(--muted)',fontWeight:'500'}}>
-                {t.addGuest}
+                + Add guest
               </button>
             </div>
 
@@ -473,7 +300,6 @@ export default function GuestPage() {
               key={activeGuest}
               guest={guests[activeGuest]}
               onChange={data => updateGuest(activeGuest, data)}
-              t={t}
               onSubmit={submitAll}
               step={step}
               setStep={setStep}
@@ -482,8 +308,8 @@ export default function GuestPage() {
         ) : (
           <div style={{paddingTop:'80px',textAlign:'center'}}>
             <div style={{fontSize:'48px',marginBottom:'24px'}}>✓</div>
-            <h1 style={{fontFamily:'Cormorant Garamond,serif',fontSize:'40px',fontWeight:300,marginBottom:'16px'}}>{t.thankYou}</h1>
-            <p style={{color:'var(--muted)',lineHeight:1.8,maxWidth:'400px',margin:'0 auto'}}>{t.thankYouMsg}</p>
+            <h1 style={{fontFamily:'Cormorant Garamond,serif',fontSize:'40px',fontWeight:300,marginBottom:'16px'}}>Thank you.</h1>
+            <p style={{color:'var(--muted)',lineHeight:1.8,maxWidth:'400px',margin:'0 auto'}}>Your preferences have been saved and transmitted to the crew. Our private chef will ensure every meal is tailored to your taste throughout your time on board.</p>
           </div>
         )}
       </main>
