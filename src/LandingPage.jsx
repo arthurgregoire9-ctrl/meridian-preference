@@ -7,6 +7,7 @@ const Logo = ({ size = 32, light = true }) => (
   </svg>
 )
 
+
 export default function LandingPage() {
   const navigate = useNavigate()
 
