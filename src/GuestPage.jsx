@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { createClient } from "@supabase/supabase-js"
-const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtcWdieGpuZmtqbmtwZmlyZmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDA0NzYsImV4cCI6MjA5MTY3NjQ3Nn0.y16FCg_HXkd7Ua_CU7K2o5Kd-QuEXxbz18hZsj4GaHI")
-
+import { supabase } from "./supabase.js"
 const emptyGuest = () => ({
   name:'', email:'', allergies:[], dislikes:[], diets:[], cuisines:[],
   favorites:'', spirits:'', cocktails:'', softs:'', breakfast:'', juices:'', notes:'',
@@ -247,9 +245,9 @@ export default function GuestPage() {
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
       <nav>
   <svg width="160" height="32" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
-    <text x="150" y="38" textAnchor="middle" fontFamily="Cormorant Garamond, Georgia, serif" fontSize="28" fontWeight="300" fill="#ffffff" letterSpacing="8">THE GALLEY</text>
-    <line x1="60" y1="46" x2="240" y2="46" stroke="#c9a96e" strokeWidth="0.8"/>
-  </svg>
+  <text x="150" y="38" textAnchor="middle" fontFamily="Cormorant Garamond, Georgia, serif" fontSize="28" fontWeight="300" fill="#ffffff" letterSpacing="8">NAUVILUS</text>
+  <line x1="40" y1="46" x2="260" y2="46" stroke="#c9a96e" strokeWidth="0.8"/>
+</svg>
 </nav>
       <main style={{textAlign:'center',paddingTop:'80px'}}>
         <h1 style={{fontFamily:'Cormorant Garamond,serif',fontWeight:300}}>Link not found</h1>
@@ -261,7 +259,7 @@ export default function GuestPage() {
   if (!charter) return (
     <>
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-      <nav><div className="brand">Provisio</div></nav>
+      <nav><div className="brand">Nauvilus</div></nav>
       <main style={{textAlign:'center',paddingTop:'80px'}}>
         <p style={{color:'var(--muted)'}}>Loading...</p>
       </main>

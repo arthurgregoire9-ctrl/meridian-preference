@@ -1,7 +1,5 @@
 import { useState } from "react"
-import { createClient } from "@supabase/supabase-js"
-const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtcWdieGpuZmtqbmtwZmlyZmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDA0NzYsImV4cCI6MjA5MTY3NjQ3Nn0.y16FCg_HXkd7Ua_CU7K2o5Kd-QuEXxbz18hZsj4GaHI")
-
+import { supabase } from "./supabase.js"
 export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [unlocked, setUnlocked] = useState(false)
@@ -99,10 +97,10 @@ export default function AdminPage() {
       <>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
         <nav>
-  <svg width="160" height="32" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
-    <text x="150" y="38" textAnchor="middle" fontFamily="Cormorant Garamond, Georgia, serif" fontSize="28" fontWeight="300" fill="#ffffff" letterSpacing="8">THE GALLEY</text>
-    <line x1="60" y1="46" x2="240" y2="46" stroke="#c9a96e" strokeWidth="0.8"/>
-  </svg>
+ <svg width="160" height="32" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+  <text x="150" y="38" textAnchor="middle" fontFamily="Cormorant Garamond, Georgia, serif" fontSize="28" fontWeight="300" fill="#ffffff" letterSpacing="8">NAUVILUS</text>
+  <line x1="40" y1="46" x2="260" y2="46" stroke="#c9a96e" strokeWidth="0.8"/>
+</svg>
 </nav>
         <main style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'60vh'}}>
           <div style={{width:'100%',maxWidth:'360px'}}>
@@ -126,7 +124,7 @@ export default function AdminPage() {
     <>
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
       <nav>
-        <div className="brand">Provisio</div>
+        <div className="brand">Nauvilus</div>
         <div style={{fontSize:'12px',color:'rgba(255,255,255,0.5)',letterSpacing:'.08em'}}>{admin?.agency}</div>
       </nav>
       <main>

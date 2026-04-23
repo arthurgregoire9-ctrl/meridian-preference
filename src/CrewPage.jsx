@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { createClient } from "@supabase/supabase-js"
+import { supabase } from "./supabase.js"
 import jsPDF from "jspdf"
 
-const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtcWdieGpuZmtqbmtwZmlyZmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDA0NzYsImV4cCI6MjA5MTY3NjQ3Nn0.y16FCg_HXkd7Ua_CU7K2o5Kd-QuEXxbz18hZsj4GaHI")
+
 const ANTHROPIC_KEY = import.meta.env.VITE_ANTHROPIC_KEY
 
 function exportGuestsPDF(guests, charterName) {
@@ -335,16 +335,13 @@ export default function CrewPage() {
     setMessages(prev => [...prev, { role: 'user', text }])
     setIsLoading(true)
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": ANTHROPIC_KEY,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true"
-        },
-        body: JSON.stringify({ model: "claude-sonnet-4-6", max_tokens: 4000, system: buildSystem(), messages: updatedHistory })
-      })
+      const res = await fetch("/api/chat", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ system: buildSystem(), messages: updatedHistory })
+})
       const data = await res.json()
       if (data.error) throw new Error(data.error.message)
       const reply = (data.content || []).map(b => b.text || "").join("")
