@@ -3,9 +3,6 @@ import { useParams } from "react-router-dom"
 import { supabase } from "./supabase.js"
 import jsPDF from "jspdf"
 
-
-const ANTHROPIC_KEY = import.meta.env.VITE_ANTHROPIC_KEY
-
 function exportGuestsPDF(guests, charterName) {
   const doc = new jsPDF()
   const pageWidth = doc.internal.pageSize.getWidth()
@@ -30,7 +27,6 @@ function exportGuestsPDF(guests, charterName) {
     if (y > 270) { doc.addPage(); y = 20 }
   }
 
-  // Header
   doc.setFillColor(26, 58, 92)
   doc.rect(0, 0, pageWidth, 30, 'F')
   doc.setFontSize(18)
@@ -44,42 +40,28 @@ function exportGuestsPDF(guests, charterName) {
 
   guests.forEach((g, index) => {
     checkPage()
-
-    // Guest name
     addText(g.name, 15, 16, 'bold', [26, 58, 92])
     y += 2
 
-    if (g.allergies?.length) {
-  addText(`ALLERGIES: ${g.allergies.join(', ')}`, 15, 10, 'bold', [180, 40, 40])
-}
-if (g.dislikes?.length) {
-  addText(`DISLIKES: ${g.dislikes.join(', ')}`, 15, 10, 'normal', [120, 80, 40])
-}
-if (g.diets?.length) {
-  addText(`DIET: ${g.diets.join(', ')}`, 15, 10, 'normal', [40, 100, 60])
-}
-    if (g.cuisines?.length) {
-      addText(`Preferred cuisines: ${g.cuisines.join(', ')}`, 15, 10)
-    }
-    if (g.favorites) {
-      addText(`Favourites: ${g.favorites}`, 15, 10)
-    }
+    if (g.allergies?.length) addText(`ALLERGIES: ${g.allergies.join(', ')}`, 15, 10, 'bold', [180, 40, 40])
+    if (g.dislikes?.length) addText(`DISLIKES: ${g.dislikes.join(', ')}`, 15, 10, 'normal', [120, 80, 40])
+    if (g.diets?.length) addText(`DIET: ${g.diets.join(', ')}`, 15, 10, 'normal', [40, 100, 60])
+    if (g.cuisines?.length) addText(`Preferred cuisines: ${g.cuisines.join(', ')}`, 15, 10)
+    if (g.favorites) addText(`Favourites: ${g.favorites}`, 15, 10)
 
     y += 3
-    // Meal times
     if (g.breakfast_time || g.lunch_time || g.dinner_time) {
       addText('MEAL TIMES', 15, 9, 'bold', [100, 100, 100])
       const times = []
-     if (g.breakfast_time) times.push(`Breakfast: ${g.breakfast_time}`)
-if (g.lunch_time) times.push(`Lunch: ${g.lunch_time}`)
-if (g.dinner_time) times.push(`Dinner: ${g.dinner_time}`)
+      if (g.breakfast_time) times.push(`Breakfast: ${g.breakfast_time}`)
+      if (g.lunch_time) times.push(`Lunch: ${g.lunch_time}`)
+      if (g.dinner_time) times.push(`Dinner: ${g.dinner_time}`)
       addText(times.join('   |   '), 15, 10)
     }
     if (g.breakfast) addText(`Breakfast prefs: ${g.breakfast}`, 15, 10)
     if (g.juices) addText(`Juices: ${g.juices}`, 15, 10)
 
     y += 3
-    // Drinks
     if (g.spirits || g.cocktails || g.softs) {
       addText('DRINKS', 15, 9, 'bold', [100, 100, 100])
       if (g.spirits) addText(`Spirits: ${g.spirits}`, 15, 10)
@@ -97,7 +79,6 @@ if (g.dinner_time) times.push(`Dinner: ${g.dinner_time}`)
     checkPage()
   })
 
-  // Footer
   const today = new Date().toLocaleDateString('en-GB')
   doc.setFontSize(8)
   doc.setTextColor(160, 160, 160)
@@ -178,12 +159,23 @@ export default function CrewPage() {
   }, [token])
 
   const unlock = async () => {
-    const { data } = await supabase.from('yachts').select('crew_password').eq('crew_token', token).single()
-    if (data && passwordInput === (data.crew_password || 'crew2026')) {
-      localStorage.setItem(`crewAuth_${token}`, 'true')
-      setUnlocked(true)
-      fetchYachtAndGuests()
-    } else setPasswordError(true)
+    try {
+      const res = await fetch('/api/crew-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password: passwordInput })
+      })
+      const result = await res.json()
+      if (res.ok && result.yacht) {
+        localStorage.setItem(`crewAuth_${token}`, 'true')
+        setUnlocked(true)
+        fetchYachtAndGuests()
+      } else {
+        setPasswordError(true)
+      }
+    } catch (err) {
+      setPasswordError(true)
+    }
   }
 
   const fetchYachtAndGuests = async () => {
@@ -336,14 +328,12 @@ export default function CrewPage() {
     setIsLoading(true)
     try {
       const res = await fetch("/api/chat", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({ system: buildSystem(), messages: updatedHistory })
-})
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ system: buildSystem(), messages: updatedHistory })
+      })
       const data = await res.json()
-      if (data.error) throw new Error(data.error.message)
+      if (data.error) throw new Error(data.error)
       const reply = (data.content || []).map(b => b.text || "").join("")
       setChatHistory(prev => [...prev, { role: "assistant", content: reply }])
       setMessages(prev => [...prev, { role: 'ai', text: reply }])
@@ -365,11 +355,11 @@ export default function CrewPage() {
       <>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
         <nav>
-  <svg width="160" height="32" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
-  <text x="150" y="38" textAnchor="middle" fontFamily="Cormorant Garamond, Georgia, serif" fontSize="28" fontWeight="300" fill="#ffffff" letterSpacing="8">NAUVILUS</text>
-  <line x1="40" y1="46" x2="260" y2="46" stroke="#c9a96e" strokeWidth="0.8"/>
-</svg>
-</nav>
+          <svg width="160" height="32" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+            <text x="150" y="38" textAnchor="middle" fontFamily="Cormorant Garamond, Georgia, serif" fontSize="28" fontWeight="300" fill="#ffffff" letterSpacing="8">NAUVILUS</text>
+            <line x1="40" y1="46" x2="260" y2="46" stroke="#c9a96e" strokeWidth="0.8"/>
+          </svg>
+        </nav>
         <main style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'60vh'}}>
           <div style={{width:'100%',maxWidth:'360px'}}>
             <div className="page-header" style={{textAlign:'center'}}>
