@@ -15,11 +15,25 @@ export default function AdminPage() {
   const [editingPassword, setEditingPassword] = useState(null)
   const [newCrewPassword, setNewCrewPassword] = useState('')
 
-  const login = async () => {
-    const { data } = await supabase.from('admins').select('*').eq('password', password).single()
-    if (data) { setAdmin(data); setUnlocked(true); fetchYachts(data.id) }
-    else setError('Incorrect password.')
+ const login = async () => {
+  try {
+    const res = await fetch('/api/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    })
+    const result = await res.json()
+    if (res.ok && result.admin) {
+      setAdmin(result.admin)
+      setUnlocked(true)
+      fetchYachts(result.admin.id)
+    } else {
+      setError('Incorrect password.')
+    }
+  } catch (err) {
+    setError('Connection error.')
   }
+}
 
   const fetchYachts = async (agencyId) => {
     const id = agencyId || admin?.id
