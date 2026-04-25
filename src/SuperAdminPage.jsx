@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react"
-import { createClient } from "@supabase/supabase-js"
-const supabase = createClient("https://dmqgbxjnfkjnkpfirfdl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtcWdieGpuZmtqbmtwZmlyZmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDA0NzYsImV4cCI6MjA5MTY3NjQ3Nn0.y16FCg_HXkd7Ua_CU7K2o5Kd-QuEXxbz18hZsj4GaHI")
-
-const SUPER_PASSWORD = "arthur"
 
 export default function SuperAdminPage() {
-  const [unlocked, setUnlocked] = useState(localStorage.getItem('superAuth') === 'true')
+  const [unlocked, setUnlocked] = useState(false)
+  const [password, setPassword] = useState(localStorage.getItem('superPwd') || '')
   const [passwordInput, setPasswordInput] = useState('')
   const [passwordError, setPasswordError] = useState(false)
   const [agencies, setAgencies] = useState([])
@@ -14,28 +11,52 @@ export default function SuperAdminPage() {
   const [creating, setCreating] = useState(false)
   const [success, setSuccess] = useState('')
 
-  useEffect(() => {
-    if (unlocked) fetchAgencies()
-  }, [unlocked])
+  const callSuper = async (action, payload = {}, pwd) => {
+    const res = await fetch('/api/superadmin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, password: pwd || password, payload })
+    })
+    return res.json()
+  }
 
-  const unlock = () => {
-    if (passwordInput === SUPER_PASSWORD) {
-      localStorage.setItem('superAuth', 'true')
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (password) {
+        const result = await callSuper('verify', {}, password)
+        if (result.ok) {
+          setUnlocked(true)
+          fetchAgencies(password)
+        } else {
+          localStorage.removeItem('superPwd')
+          setPassword('')
+        }
+      }
+    }
+    checkAuth()
+  }, [])
+
+  const unlock = async () => {
+    const result = await callSuper('verify', {}, passwordInput)
+    if (result.ok) {
+      localStorage.setItem('superPwd', passwordInput)
+      setPassword(passwordInput)
       setUnlocked(true)
+      fetchAgencies(passwordInput)
     } else {
       setPasswordError(true)
     }
   }
 
-  const fetchAgencies = async () => {
-    const { data } = await supabase.from('admins').select('id, agency, password, created_at').order('created_at', { ascending: false })
-    if (data) setAgencies(data)
+  const fetchAgencies = async (pwd) => {
+    const result = await callSuper('list_agencies', {}, pwd)
+    if (result.data) setAgencies(result.data)
   }
 
   const createAgency = async () => {
     if (!newAgency.trim() || !newPassword.trim()) return
     setCreating(true)
-    await supabase.from('admins').insert({ agency: newAgency.trim(), password: newPassword.trim() })
+    await callSuper('create_agency', { agency: newAgency.trim(), password: newPassword.trim() })
     setNewAgency('')
     setNewPassword('')
     setSuccess('Agency created successfully!')
@@ -46,13 +67,12 @@ export default function SuperAdminPage() {
 
   const deleteAgency = async (id, agencyName) => {
     if (!window.confirm(`Delete ${agencyName}? Their yachts will be unlinked but not deleted.`)) return
-    await supabase.from('yachts').update({ agency_id: null }).eq('agency_id', id)
-    await supabase.from('admins').delete().eq('id', id)
+    await callSuper('delete_agency', { id })
     await fetchAgencies()
   }
 
   const updatePassword = async (id, newPwd) => {
-    await supabase.from('admins').update({ password: newPwd }).eq('id', id)
+    await callSuper('update_agency_password', { id, password: newPwd })
     setSuccess('Password updated!')
     setTimeout(() => setSuccess(''), 3000)
     await fetchAgencies()
@@ -63,11 +83,11 @@ export default function SuperAdminPage() {
       <>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
         <nav>
-  <svg width="160" height="32" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
-  <text x="150" y="38" textAnchor="middle" fontFamily="Cormorant Garamond, Georgia, serif" fontSize="28" fontWeight="300" fill="#ffffff" letterSpacing="8">NAUVILUS</text>
-  <line x1="40" y1="46" x2="260" y2="46" stroke="#c9a96e" strokeWidth="0.8"/>
-</svg>
-</nav>
+          <svg width="160" height="32" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+            <text x="150" y="38" textAnchor="middle" fontFamily="Cormorant Garamond, Georgia, serif" fontSize="28" fontWeight="300" fill="#ffffff" letterSpacing="8">NAUVILUS</text>
+            <line x1="40" y1="46" x2="260" y2="46" stroke="#c9a96e" strokeWidth="0.8"/>
+          </svg>
+        </nav>
         <main style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'60vh'}}>
           <div style={{width:'100%',maxWidth:'360px'}}>
             <div className="page-header" style={{textAlign:'center'}}>
@@ -90,7 +110,7 @@ export default function SuperAdminPage() {
     <>
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
       <nav>
-        <div className="brand">The Galley</div>
+        <div className="brand">Nauvilus</div>
         <div style={{fontSize:'12px',color:'rgba(255,255,255,0.5)',letterSpacing:'.08em'}}>Super Admin</div>
       </nav>
       <main>
